@@ -1,5 +1,6 @@
-# GameBot
-ربات بازی برای سرگرمی و کسب درامد انلاین
+# PlusSaver
+
+a telegram bot with telethon for downlaod media from social media
 
 # Config:
     1 - open config folder
