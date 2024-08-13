@@ -1,11 +1,9 @@
 from telethon.custom import Message
 from telethon.events import CallbackQuery
 from telethon.types import PeerChannel, PeerUser, Channel as ChannelInstance
-from telethon.tl.types import InputMediaDice as Dice
 from telethon.errors.rpcerrorlist import FloodWaitError
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantRequest
 from telethon.errors.rpcerrorlist import UserNotParticipantError, ChatAdminRequiredError, ChannelPrivateError
-from uuid import uuid4
 from abc import ABC, abstractmethod
 from re import match
 from typing import Iterable, Any
@@ -17,6 +15,7 @@ from .buttons import InlineButtonsData, InlineButtons, TextButtons, TextButtonsS
 from ..database import User, Channel, Session, engine, Configs
 from .app import client
 from .step import Step, step_limit, Permission
+from ..regexs import Regexs
 
 
 logging.basicConfig(filename="log.txt", filemode="a",format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -64,7 +63,6 @@ async def check_join(user_id: int, invited_by_user_id: int | None = None) -> boo
         return True
 
 
-
 # function for add new users if not database
 async def add_user(user_id: int, invited_by_user_id: int | None = None) -> None:
     
@@ -79,37 +77,39 @@ async def add_user(user_id: int, invited_by_user_id: int | None = None) -> None:
             configs = session.query(Configs).first()
             user = User(user_id=int(user_id), balance=configs.entry_prize)
             
-            if invited_by_user_id and str(invited_by_user_id).isnumeric():
-                inviter_user = session.query(User).filter_by(user_id=int(invited_by_user_id)).first()
-                if inviter_user:
-                    user.invited_by = inviter_user.id
-                    user.referral_active = False
-                    if is_joined:
-                        user.referral_active = True
-                        inviter_user.balance += configs.referral_bonus
-                        try:
-                            await client.send_message(PeerUser(inviter_user.user_id), Strings.referral_bonus(user.user_id, configs.referral_bonus), parse_mode="html")
-                        except Exception as e:
-                            print(e)
+            # if invited_by_user_id and str(invited_by_user_id).isnumeric():
+            #     inviter_user = session.query(User).filter_by(user_id=int(invited_by_user_id)).first()
+            #     if inviter_user:
+            #         user.invited_by = inviter_user.id
+            #         user.referral_active = False
+            #         if is_joined:
+            #             user.referral_active = True
+            #             inviter_user.balance += configs.referral_bonus
+            #             try:
+            #                 await client.send_message(PeerUser(inviter_user.user_id), Strings.referral_bonus(user.user_id, configs.referral_bonus), parse_mode="html")
+            #             except Exception as e:
+            #                 print(e)
 
             session.add(user)
             session.commit()
+            # return True
+        if is_joined:
             return True
         
-        elif user and user.referral_active == False and user.invited_by and is_joined:
-            user.referral_active = True
-            configs = session.query(Configs).first()
-            inviter = session.query(User).filter_by(id=int(user.invited_by)).first()
-            inviter.balance += configs.referral_bonus
-            try:
-                await client.send_message(PeerUser(inviter.user_id), Strings.referral_bonus(user.user_id, configs.referral_bonus), parse_mode="html")
-            except Exception as e:
-                print(e)
-            session.commit()
-            return True
+        # elif user and user.referral_active == False and user.invited_by and is_joined:
+        #     user.referral_active = True
+        #     configs = session.query(Configs).first()
+        #     inviter = session.query(User).filter_by(id=int(user.invited_by)).first()
+        #     inviter.balance += configs.referral_bonus
+        #     try:
+        #         await client.send_message(PeerUser(inviter.user_id), Strings.referral_bonus(user.user_id, configs.referral_bonus), parse_mode="html")
+        #     except Exception as e:
+        #         print(e)
+        #     session.commit()
+        #     return True
         
-        else:
-            return is_joined
+        # else:
+        #     return is_joined
                
 
 # del user from step
@@ -175,25 +175,7 @@ class CallBackQueryHandlers(HandlerBase):
 
                 case InlineButtonsData.JOINED_IN_CHANNEL:
                     await event.delete()
-                    await client.send_message(event.chat_id, Strings.START_MENU, buttons=TextButtons.START_MENU)
-
-                # case data if (data.startswith(InlineButtonsData.DICE_PLAN)):
-                #     dice_id, amount = data.replace(InlineButtonsData.DICE_PLAN, '').split('_')
-
-                #     with Session(engine) as session:
-                #         dice_plan = session.query(DicePlan).filter_by(id=int(dice_id)).first()
-                #         if not dice_plan:
-                #             return
-
-                #         await event.edit(
-                #             Strings.dice_info(dice_plan.title, dice_plan.coefficient , amount), 
-                #             buttons=InlineButtons.acc_reject_dice(dice_id, amount)
-                #         )
-
-                # case InlineButtonsData.SEND_FACTOR:
-                #     step = Permission(PART=Step.GET_PAY)
-                #     step_limit[int(event.sender_id)] = step
-                #     await event.edit(Strings.GET_PAY)
+                    await client.send_message(event.chat_id, Strings.START_MENU)
 
         except Exception as e:
             print(e)
@@ -303,76 +285,6 @@ class CallBackQueryHandlers(HandlerBase):
                     step_limit[int(event.sender_id)] = step
                     await event.edit(Strings.ENTER_URL)
 
-                # case data if (data.startswith(InlineButtonsData.ACC_PAY)):
-                #     user_id = data.replace(InlineButtonsData.ACC_PAY, '')
-
-                #     try:
-                #         await client.send_message(event.sender_id, Strings.GET_PAY_AMOUNT)
-                #         await event.answer(Strings.CHECK_PV, alert=True)
-                #         step = Permission(PART=Step.GET_PAY_AMOUNT, USER_ID=int(user_id), EVENT=event)
-                #         step_limit[int(event.sender_id)] = step
-                #     except Exception as e:
-                #         print(e)
-                #         await event.answer(Strings.PLEASE_START_BOT)
-
-                # case data if (data.startswith(InlineButtonsData.REJECT_PAY)):
-                #     withdraw_code = data.replace(InlineButtonsData.REJECT_PAY, '')
-
-                #     with Session(engine) as session:
-
-                #         withdraw_req = session.query(Withdraw).filter_by(withdraw_code=withdraw_code).first()
-
-                #         if not withdraw_code:
-                #             await event.delete()
-                #             return
-
-                #         await event.edit(Strings.REJECTED)
-                #         try:
-                #             await client.send_message(PeerUser(int(withdraw_req.user.user_id)), Strings.PAY_REJECTED)
-                #             session.delete(withdraw_req)
-                #             session.commit()
-                #         except Exception as e:
-                #             print(e)
-
-                # case data if (data.startswith(InlineButtonsData.ACC_WITHDRAW)):
-                #     withdraw_code = data.replace(InlineButtonsData.ACC_WITHDRAW, '')
-                #     with Session(engine) as session:
-                #         withdraw_req = session.query(Withdraw).filter_by(withdraw_code=withdraw_code).first()
-
-                #         if not withdraw_code:
-                #             await event.delete()
-                #             return
-
-                #         try:
-                #             await client.send_message(event.sender_id, Strings.ENTER_TXID)
-                #             await event.answer(Strings.CHECK_PV, alert=True)
-                #             step = Permission(
-                #                 PART=Step.GET_TXID_WITHDRAW, 
-                #                 WITHDRAW_CODE=withdraw_req.withdraw_code,
-                #                 EVENT=event
-                #             )
-                #             step_limit[int(event.sender_id)] = step
-                #         except Exception as e:
-                #             print(e)
-                #             await event.answer(Strings.PLEASE_START_BOT)
-
-                # case data if (data.startswith(InlineButtonsData.REJECT_WITHDRAW)):
-                #     withdraw_code = data.replace(InlineButtonsData.REJECT_WITHDRAW, '')
-
-                #     await event.edit(Strings.REJECTED)
-
-                #     with Session(engine) as session:
-                #         withdraw = session.query(Withdraw).filter_by(withdraw_code=withdraw_code).first()
-                #         if withdraw and not withdraw.is_check:
-                #             withdraw.user.balance += withdraw.amount
-                #             withdraw.is_check = True
-
-                #             try:
-                #                 await client.send_message(PeerUser(int(withdraw.user.user_id)), Strings.PAY_REJECTED)
-                #             except Exception as e:
-                #                 print(e)
-                    
-                #             session.commit()
         
         except Exception as e:
             print(e)
@@ -392,76 +304,57 @@ class NewMessageHandlers(HandlerBase):
             # if text.startswith("/start "):
                 
             #     invited_by = text.replace("/start ", '')
-            #     text = "/start"
+            #     text = TextButtonsString.START_COMMAND
             #     if invited_by.isnumeric():
             #         invited_by_user_id = int(invited_by)
 
             if not await add_user(event.sender_id, invited_by_user_id):
-                return
+                return            
             
             match (text):
+                
 
-                case "/start":
+                case TextButtonsString.START_COMMAND:
                     del_step(event.sender_id)
-                    await client.send_message(event.chat_id, Strings.START_MENU, buttons=TextButtons.START_MENU)
+                    await client.send_message(event.chat_id, Strings.START_MENU, buttons=UrlButtons.ADD_TO_GROUP)
 
-                case TextButtonsString.RULES:
+                case TextButtonsString.RULES_COMMAND:
                     with Session(engine) as session:
                         config = session.query(Configs).first()
-                    await client.send_message(entity=event.chat_id, message=config.rules_text, buttons=TextButtons.START_MENU)
+                    await client.send_message(entity=event.chat_id, message=config.rules_text, parse_mode='markdown')
 
-                case TextButtonsString.HELP:
+                case TextButtonsString.HELP_COMMAND:
                     with Session(engine) as session:
                         config = session.query(Configs).first()
-                    await client.send_message(entity=event.chat_id, message=config.trust_text, buttons=UrlButtons.trust_channel(), parse_mode="html")
+                    await client.send_message(entity=event.chat_id, message=config.trust_text, buttons=UrlButtons.trust_channel(), parse_mode="markdown")
 
-                case TextButtonsString.CONTACT_US:
+                case TextButtonsString.CONTACT_US_COMMAND:
                     await client.send_message(entity=event.chat_id, message=Strings.CONTACT_US, buttons=UrlButtons.CONTACT_US)
 
-                case TextButtonsString.MY_ACCOUNT:
-                    with Session(engine) as session:
-                        user = session.query(User).filter_by(user_id=int(event.sender_id)).first()
-                        await client.send_message(entity=event.chat_id, message=Strings.my_account(user), buttons=TextButtons.START_MENU, parse_mode='html')
+                case TextButtonsString.DONATE:
+                    await client.send_message(entity=event.chat_id, message=Strings.DONATE)
 
-                # case TextButtonsString.WITHDRAW:
+                case TextButtonsString.CREATOR:
+                    await client.send_message(entity=event.chat_id, message=Strings.CREATOR)
 
+                # case TextButtonsString.MY_ACCOUNT:
                 #     with Session(engine) as session:
                 #         user = session.query(User).filter_by(user_id=int(event.sender_id)).first()
-                #         if len(user.user_referrals) < 10:
-                #             await event.reply(Strings.NEED_REFERRAL)
-                #             return
-                        
-                #         step = Permission(PART=Step.GET_WITHDRAW_AMOUNT)
-                #         step_limit[int(event.sender_id)] = step
-                #         await event.reply(Strings.ENTER_AMOUNT)
+                #         await client.send_message(entity=event.chat_id, message=Strings.my_account(user), parse_mode='html')
 
-                case TextButtonsString.DEPOSIT_PANEL:
-                    await client.send_message(entity=event.chat_id, message=Strings.SELECT, buttons=TextButtons.DEPOSIT_PLAN)
+                # case TextButtonsString.REFERRAL:
+                #     with Session(engine) as session:
 
-                # case TextButtonsString.TRON:
-                    
-                #     await client.send_message(
-                #         entity=event.chat_id, 
-                #         message=Strings.send_crypto(BotConfig.WALLET), 
-                #         parse_mode="html", 
-                #         buttons=InlineButtons.SEND_FACTOR
-                #     )
+                #         user = session.query(User).filter_by(user_id=int(event.sender_id)).first()
+                #         configs = session.query(Configs).first()
 
-                case TextButtonsString.REFERRAL:
-                    with Session(engine) as session:
+                #         message = await client.send_file(entity=event.chat_id, file=BotConfig.REFERRAL_IMAGE_ADDRESS, caption=Strings.referral_banner(event.sender_id, configs))
+                #         await client.send_message(entity=event.chat_id, message=Strings.referral_reply(user, configs), buttons=TextButtons.DEPOSIT_PLAN, reply_to=message)
 
-                        user = session.query(User).filter_by(user_id=int(event.sender_id)).first()
-                        configs = session.query(Configs).first()
-
-                        message = await client.send_file(entity=event.chat_id, file=BotConfig.REFERRAL_IMAGE_ADDRESS, caption=Strings.referral_banner(event.sender_id, configs))
-                        await client.send_message(entity=event.chat_id, message=Strings.referral_reply(user, configs), buttons=TextButtons.DEPOSIT_PLAN, reply_to=message)
-
-                case TextButtonsString.BACK_TO_START:
-                    await client.send_message(entity=event.chat_id, message=Strings.BACKED, buttons=TextButtons.START_MENU)
-
-        
+                
         except Exception as e:
             print(e)
+
 
     @staticmethod
     async def admin(event: Message) -> None:
@@ -469,6 +362,7 @@ class NewMessageHandlers(HandlerBase):
         try:
         
             match (str(event.message.message)):
+
                 case "/admin" | "/panel":
                     await client.send_message(entity=event.chat_id, message=Strings.ADMIN_PANEL, buttons=InlineButtons.ADMIN_PANEL)
 
@@ -481,10 +375,35 @@ class NewMessageHandlers(HandlerBase):
 
         try:
             if str(event.message.message) == "/cancel" and del_step(event.sender_id):    
-                await event.reply(Strings.CANCELED, buttons=TextButtons.START_MENU)
+                await event.reply(Strings.CANCELED)
         except Exception as e:
             print(e)
 
+
+    @staticmethod
+    async def get_url(event: Message) -> None:
+        
+        url = event.message.message
+
+        match = Regexs(url=url)
+
+        if match.instagram:
+            await event.reply("SoundCloud : Comming Soon 💜")
+
+        elif match.youtube:
+            await event.reply("SoundCloud : Comming Soon ❤")
+
+        elif match.soundcloud:
+            await event.reply("SoundCloud : Comming Soon 🧡")
+
+        elif match.spotify:
+            await event.reply("Spotify : Comming Soon 💚")
+
+        elif match.tiktok:
+            await event.reply("TikTok : Comming Soon 🖤")
+
+        else:
+            pass
 
 class NewMessageGetInformationsHandlers(HandlerBase):
 
@@ -501,76 +420,6 @@ class NewMessageGetInformationsHandlers(HandlerBase):
             # this switch for get information
             
             # match (info.PART):
-
-                # case Step.GET_PAY:
-                #     try:
-
-                #         send = await client.send_message(PeerChannel(BotConfig.PAYMNET_CHANNEL), event.message)
-                #         await client.send_message(
-                #             PeerChannel(BotConfig.PAYMNET_CHANNEL), 
-                #             Strings.deposit_request(event.sender_id), 
-                #             buttons=InlineButtons.acc_reject_pay(event.sender_id),
-                #             reply_to=send
-                #         )
-                #         message = Strings.PAY_GETED
-                #     except Exception as e:
-                #         print(e)
-                #         message = Strings.PAY_NOT_GETED
-
-                #     await client.send_message(event.chat_id, message, buttons=TextButtons.START_MENU)
-                #     del_step(event.sender_id)
-
-                # case Step.GET_WITHDRAW_AMOUNT:
-                #     amount = str(event.message.message)
-
-                #     if not amount.isnumeric():
-                #         await event.reply(Strings.ENTER_NUMBER)
-                #         return
-
-                #     with Session(engine) as session:
-                #         user = session.query(User).filter_by(user_id=int(event.sender_id)).first()
-                    
-                #         if int(amount) > user.balance:
-                #             await event.reply(Strings.BAD_AMOUNT)
-                #             return
-                
-                #     step = Permission(PART=Step.GET_WALLET, AMOUNT=int(amount))
-                #     step_limit[int(event.sender_id)] = step
-
-                #     await event.reply(Strings.ENTER_WALLET)
-
-                # case Step.GET_WALLET:
-
-                #     wallet = str(event.message.message)
-
-                #     if not wallet:
-                #         await event.reply(Strings.ENTER_WALLET)
-                #         return
-                    
-                #     try:
-                    
-                #         with Session(engine) as session:
-                #             user = session.query(User).filter_by(user_id=int(event.sender_id)).first()
-                #             code = str(uuid4())
-                #             obj = Withdraw(user_id=user.id, amount=int(info.AMOUNT), wallet=wallet, withdraw_code=code)
-                    
-                #             await client.send_message(
-                #                 entity=PeerChannel(BotConfig.WITHDRAW_CHANNEL), 
-                #                 message=Strings.withdraw_request(user_id=event.sender_id, amount=info.AMOUNT, wallet=wallet),
-                #                 buttons=InlineButtons.acc_reject_withdraw(code),
-                #                 parse_mode="html"
-                #             )
-                #             message = Strings.REQUEST_GETED
-                #             user.balance -= int(info.AMOUNT)
-                #             session.add(obj)
-                #             session.commit()
-                #     except Exception as e:
-                #         print(e)
-                #         message = Strings.REQUEST_NOT_GETED
-
-                #     del_step(event.sender_id)
-                #     await event.reply(message, buttons=TextButtons.START_MENU)
-
                 
         except Exception as e:
             print(e)
@@ -763,7 +612,7 @@ class NewMessageGetInformationsHandlers(HandlerBase):
 
                         await event.reply(Strings.TEXT_IS_LONG)
 
-                case Step.CHANGE_TRUST_CHANNEL:
+                case Step.CHANGE_SUPPORT_CHANNEL:
                     text = str(event.message.message)
                     if match(r'^(?:https://telegram\.me/|https://t\.me/|t\.me/|telegram\.me/|@)[A-Za-z0-9_+]+', text):
                         with Session(engine) as session:
@@ -771,7 +620,7 @@ class NewMessageGetInformationsHandlers(HandlerBase):
                             configs = session.query(Configs).first()
                             if text.startswith("@"):
                                 text = text.replace("@", "t.me/")
-                            configs.trust_channel_url = text
+                            configs.support_channel_url = text
                             session.commit()
                         
                         del_step(event.sender_id)
@@ -780,66 +629,6 @@ class NewMessageGetInformationsHandlers(HandlerBase):
                     else:
                         await event.reply(Strings.ENTER_URL)
                         
-                # case Step.GET_PAY_AMOUNT:
-
-                #     amonut = str(event.message.message)
-
-                #     if not amonut.isnumeric():
-                #         await event.reply(Strings.ENTER_NUMBER)
-                #         return
-
-                #     with Session(engine) as session:
-                #         user = session.query(User).filter_by(user_id=int(info.USER_ID)).first()
-
-                #         if not user:
-                #             await event.reply(Strings.USER_NOT_EXIST)
-                #             await info.EVENT.delete()
-                #             del_step(event.sender_id)
-                #             return
-
-                #         user.balance += int(amonut)
-                #         session.commit()
-
-                #     try:
-                #         await client.send_message(entity=PeerUser(info.USER_ID), message=Strings.PAY_ACCEPTED)
-                #         await event.reply(Strings.ACCPTED)
-                #         await info.EVENT.edit(Strings.ACCPTED)
-                #     except Exception as e:
-                #         print(e)
-
-                #     del_step(event.sender_id)
-
-                # case Step.GET_TXID_WITHDRAW:
-                    
-                #     if not event.message.message:
-                #         await event.reply(Strings.ENTER_TXID)
-                #         return
-                    
-                #     try:
-
-                #         with Session(engine) as session:
-                #             withdraw = session.query(Withdraw).filter_by(withdraw_code=info.WITHDRAW_CODE).first()
-
-                #             if not withdraw:
-                #                 await event.reply(Strings.ERROR)
-                #                 await info.EVENT.delete()
-                #                 return
-                                
-                #             await client.send_message(
-                #                 entity=PeerChannel(BotConfig.WITHDRAW_CHANNEL_LOG),
-                #                 message=Strings.withdraw_request(withdraw.user.user_id, withdraw.amount, withdraw.wallet, event.message.message),
-                #                 parse_mode="html"
-                #             )
-                #             await info.EVENT.edit(Strings.ACCPTED)
-                #             await event.reply(Strings.UPDATED)
-                #             withdraw.is_check = True
-                #             session.commit()
-
-                #     except Exception as e:
-                #         await event.reply(Strings.BOT_NOT_ADMIN)
-                #         print(e)
-
-                #     del_step(event.sender_id)
         
         except Exception as e:
             print(e)

@@ -6,46 +6,36 @@ from ..database import Session, Configs, engine, Channel
 # region TextButton
 
 class TextButtonsString:
-    MY_ACCOUNT = "🔐| حساب من |🔐"
-    # WITHDRAW = "💸| برداشت |💸"
-    DEPOSIT_PANEL = "💳|افزایش موجودی|💳"
-    RULES = "⚖️|قوانین|⚖️"
-    HELP = "🕵️‍♂️|چطور اعتماد کنم؟|🕵️‍♂️"
-    CONTACT_US = "☎️|ارتباط با پشتیبانی|☎️"
-    # TRON = "🪙|ترون|🪙"
-    REFERRAL = "👥|زیر مجموعه گیری|👥"
-    BACK_TO_START = "🔙|بازگشت به منو|🔙"
+    
+    START_COMMAND = "/start"
+    RULES_COMMAND = "/rules"
+    HELP_COMMAND = "/help"
+    CONTACT_US_COMMAND = "/contacts_us"
+    DONATE = "/donate"
+    CREATOR = "/creator"
 
 
 class TextButtons:
+    pass
 
-    START_MENU = (
+    # START_MENU = (
         
-        (
-            Button.text(text=TextButtonsString.MY_ACCOUNT, resize=True, single_use=True),
-            # Button.text(text=TextButtonsString.WITHDRAW, resize=True, single_use=True),
-        ),
-        (
-            Button.text(text=TextButtonsString.DEPOSIT_PANEL, resize=True, single_use=True),
-        ),
-        (
-            Button.text(text=TextButtonsString.HELP, resize=True, single_use=False),
-            Button.text(text=TextButtonsString.RULES, resize=True, single_use=True),
-        ),
-        (
-            Button.text(text=TextButtonsString.CONTACT_US, resize=True, single_use=False),
-        ),
-    )
+    #     (
+    #         Button.text(text=TextButtonsString.MY_ACCOUNT, resize=True, single_use=True),
+    #         # Button.text(text=TextButtonsString.WITHDRAW, resize=True, single_use=True),
+    #     ),
+    #     (
+    #         Button.text(text=TextButtonsString.DEPOSIT_PANEL, resize=True, single_use=True),
+    #     ),
+    #     (
+    #         Button.text(text=TextButtonsString.HELP, resize=True, single_use=False),
+    #         Button.text(text=TextButtonsString.RULES, resize=True, single_use=True),
+    #     ),
+    #     (
+    #         Button.text(text=TextButtonsString.CONTACT_US, resize=True, single_use=False),
+    #     ),
+    # )
 
-    DEPOSIT_PLAN = (
-        (
-            # Button.text(text=TextButtonsString.TRON, resize=True, single_use=True),
-            Button.text(text=TextButtonsString.REFERRAL, resize=True, single_use=True),
-        ),
-        (
-            Button.text(text=TextButtonsString.BACK_TO_START, resize=True, single_use=True),
-        ),
-    )
 
 # endregion
 
@@ -74,18 +64,7 @@ class InlineButtonsData:
     CHANGE_TRUST_CHANNEL = "CHANGE_TRUST_CHANNEL"
     CHANGE_REFERRAL_BONUS = "CHANGE_REFERRAL_BONUS"
     JOINED_IN_CHANNEL = "JOINED_IN_CHANNEL_"
-    # ACC_PAY = "ACC_PAY_"
-    # REJECT_PAY = "REJECT_PAY_"
     BACK_TO_ADMIN = "BACK_TO_ADMIN"
-    # ACC_WITHDRAW = "ACC_WITHDRAW_"
-    # REJECT_WITHDRAW = "REJECT_WITHDRAW_"
-    # SEND_FACTOR = "SEND_FACTOR"
-
-    
-    # acc_withdraw = lambda withdraw_code: f"{InlineButtonsData.ACC_WITHDRAW}{withdraw_code}"
-    # reject_withdraw = lambda withdraw_code: f"{InlineButtonsData.REJECT_WITHDRAW}{withdraw_code}"
-    # acc_pay = lambda user_id: f"{InlineButtonsData.ACC_PAY}{user_id}"
-    # reject_pay = lambda user_id: f"{InlineButtonsData.REJECT_PAY}{user_id}"
     delete_channel = lambda channel_id: f"{InlineButtonsData.DELETE_CHANNEL}{channel_id}"
     joined_in_channel = lambda user_id: f"{InlineButtonsData.JOINED_IN_CHANNEL}{user_id}"
     
@@ -113,10 +92,6 @@ class InlineButtonString:
     CHANGE_TRUST_CHANNEL = "⚙️| تغییر کانال اعتماد"
     CHANGE_REFERRAL_BONUS = "⚙️| تغییر هزینه زیرمجموعه"
     JOINED_IN_CHANNEL = "تایید عضویت ✅"
-    # ACC_PAY = "✅ تایید کردن"
-    # REJECT_PAY = "❌ رد کردن"
-    # SEND_FACTOR = "💳 ارسال رسید"
-
     BACK_TO_ADMIN = "📍 | بازگشت"
 
 
@@ -192,31 +167,6 @@ class InlineButtons:
         BACK_TO_ADMIN
     )
 
-    # SEND_FACTOR = (
-    #     Button.inline(text=InlineButtonString.SEND_FACTOR, data=InlineButtonsData.SEND_FACTOR),
-    # )
-
-
-    # @staticmethod
-    # def acc_reject_pay(user_id: int) -> Tuple[Tuple[Button]]:
-    #     return (
-    #         (
-    #             Button.inline(text=InlineButtonString.ACC_PAY, data=InlineButtonsData.acc_pay(user_id)),
-    #             Button.inline(text=InlineButtonString.REJECT_PAY, data=InlineButtonsData.reject_pay(user_id))
-    #         ),
-    #     )
-
-
-    # @staticmethod
-    # def acc_reject_withdraw(withdraw_code) -> Tuple[Tuple[Button]]:
-    #     return (
-    #         (
-    #             Button.inline(text=InlineButtonString.ACC_PAY, data=InlineButtonsData.acc_withdraw(withdraw_code)),
-    #             Button.inline(text=InlineButtonString.REJECT_PAY, data=InlineButtonsData.reject_withdraw(withdraw_code))
-    #         ),
-    #     )
-
-
     @staticmethod
     def channels_panel(channels: Iterable[Channel]) -> List[Tuple[Channel]]:
         
@@ -251,8 +201,9 @@ class InlineButtons:
 
 
 class UrlButtonString:
-    CONTACT_US = "✍🏻| پیام به ادمین |✍🏻"
-    TRUST_CHANNEL = "💰|کانال واریزی ها|💰"
+    CONTACT_US = "✍🏻| Message to admin |✍🏻"
+    HELP_CHANNEL = "⁉| Support channel |⁉"
+    ADD_TO_GROUP = "➕| Add To Group |➕"
 
 
 class UrlButtons:
@@ -264,6 +215,12 @@ class UrlButtons:
         ),
     )
 
+    ADD_TO_GROUP = (
+        (
+            Button.url(text=UrlButtonString.ADD_TO_GROUP, url=f"https://t.me/{BotConfig.BOT_USERNAME}?startgroup=add"),
+        ),
+    )
+
     @staticmethod
     def trust_channel() -> Tuple[Tuple[Button]]:
         with Session(engine) as session:
@@ -271,7 +228,7 @@ class UrlButtons:
         
         return (
             (
-                Button.url(text=UrlButtonString.TRUST_CHANNEL, url=info.trust_channel_url)
+                Button.url(text=UrlButtonString.HELP_CHANNEL, url=info.support_channel_url)
             ),
         )
     
