@@ -405,6 +405,7 @@ class NewMessageHandlers(HandlerBase):
         else:
             pass
 
+
 class NewMessageGetInformationsHandlers(HandlerBase):
 
     @staticmethod
