@@ -387,19 +387,19 @@ class NewMessageHandlers(HandlerBase):
 
         match = Regexs(url=url)
 
-        if match.instagram:
+        if match.is_instagram:
             await event.reply("SoundCloud : Comming Soon 💜")
 
-        elif match.youtube:
+        elif match.is_youtube:
             await event.reply("SoundCloud : Comming Soon ❤")
 
-        elif match.soundcloud:
+        elif match.is_soundcloud:
             await event.reply("SoundCloud : Comming Soon 🧡")
 
-        elif match.spotify:
+        elif match.is_spotify:
             await event.reply("Spotify : Comming Soon 💚")
 
-        elif match.tiktok:
+        elif match.is_tiktok:
             await event.reply("TikTok : Comming Soon 🖤")
 
         else:
