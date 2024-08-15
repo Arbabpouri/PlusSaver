@@ -52,7 +52,7 @@ class InlineButtonsData:
     DELETE_ADMIN = "DELETE_ADMIN"
     SHOW_ADMINS = "SHOW_ADMIN"
     ADD_CHANNEL = "ADD_CHANNEL"
-    DELETE_CHANNEL = "DELETE_CHANNEL-"
+    DELETE_CHANNEL = "DELETE_CHANNEL_"
     SEND_TO_USER = "SEND_TO_USER"
     SEND_TO_USERS = "SEND_TO_USERS"
     BAN_USER = "BAN_USER"
@@ -65,6 +65,8 @@ class InlineButtonsData:
     CHANGE_REFERRAL_BONUS = "CHANGE_REFERRAL_BONUS"
     JOINED_IN_CHANNEL = "JOINED_IN_CHANNEL_"
     BACK_TO_ADMIN = "BACK_TO_ADMIN"
+    DONWLOAD_RESOLUTION = "DONWLOAD_RESOLUTION_"
+    download_resulotion = lambda resolution: f"{InlineButtonsData.DONWLOAD_RESOLUTION}{resolution}"
     delete_channel = lambda channel_id: f"{InlineButtonsData.DELETE_CHANNEL}{channel_id}"
     joined_in_channel = lambda user_id: f"{InlineButtonsData.JOINED_IN_CHANNEL}{user_id}"
     
@@ -93,6 +95,9 @@ class InlineButtonString:
     CHANGE_REFERRAL_BONUS = "⚙️| تغییر هزینه زیرمجموعه"
     JOINED_IN_CHANNEL = "تایید عضویت ✅"
     BACK_TO_ADMIN = "📍 | بازگشت"
+    MUSIC = "- Music"
+    
+    resolution = lambda resolution: f"V {resolution}"
 
 
 class InlineButtons:
@@ -194,6 +199,18 @@ class InlineButtons:
     def check_joined(user_id: int | None = None) -> Tuple[Button]:
         return Button.inline(text=InlineButtonString.JOINED_IN_CHANNEL, data=InlineButtonsData.joined_in_channel(user_id))
         
+        
+    @staticmethod
+    def select_resolution() -> List[Tuple[Button]]:
+        """This function for select video resolutions or music
+
+        Returns:
+            List[Tuple[Button]]: a list from telethon buttons
+        """
+        buttons = []
+        
+        
+        return buttons
 
 # endregion
 
