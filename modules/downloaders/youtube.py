@@ -1,6 +1,7 @@
 from pytube import YouTube
 from typing import Optional
 from ..regexs import Regexs
+from ..enums import YoutubeVideResoloution
 
 
 class Youtube:
@@ -23,9 +24,11 @@ class Youtube:
     def download_music(self):
         pass
 
-    def download_video(self, resolution: Optional[str] = "144p") -> str | None:
+    def download_video(self, resolution: Optional[str] = YoutubeVideResoloution.R_144P.value) -> str | None:
         """download_video methdo for download vide from youtube with custom resolution
         
+        >>> Youtube('url').download_video(resolution=YoutubeVideResoloution.R_144P.value)
+        or
         >>> Youtube('url').download_video(resolution='720p')
 
         Args:
@@ -34,10 +37,9 @@ class Youtube:
         Returns:
             str | None: if str returned it is video path, also 
         """
+        
         try:
             video = self.youtube_client.streams.get_by_resolution(resolution).download(r'./youtube/videos/')
             return video
         except Exception as e:
             print("Error in download_video method: ", e)
-
-Youtube('123').download_video()
