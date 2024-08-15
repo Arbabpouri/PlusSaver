@@ -393,19 +393,15 @@ class NewMessageHandlers(HandlerBase):
         
 
         if match.is_instagram:
-            await event.reply("SoundCloud : Comming Soon 💜")
             
             if match.is_instagram_reels:
-                pass
+                await event.reply("SoundCloud : Comming Soon 💜, Reels")
             
             elif match.is_instagram_post:
-                pass
+                await event.reply("SoundCloud : Comming Soon 💜, Post")
             
             elif match.is_instagram_story:
-                pass
-            
-            else:
-                pass
+                await event.reply("SoundCloud : Comming Soon 💜, Story")
 
         elif match.is_youtube:
             yt_client = Youtube(event.message.message)
@@ -428,7 +424,7 @@ class NewMessageHandlers(HandlerBase):
             await event.reply("TikTok : Comming Soon 🖤")
 
         else:
-            pass
+            await event.reply('bad url')
 
 
 class NewMessageGetInformationsHandlers(HandlerBase):
