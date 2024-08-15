@@ -9,13 +9,17 @@ from re import match
 from typing import Iterable, Any
 from asyncio import sleep
 import logging
+import shutil
+import os
 
+from ..downloaders import  Youtube
 from config import Strings, BotConfig
 from .buttons import InlineButtonsData, InlineButtons, TextButtons, TextButtonsString, UrlButtons
 from ..database import User, Channel, Session, engine, Configs
 from .app import client
 from .step import Step, step_limit, Permission
 from ..regexs import Regexs
+from ..enums import YoutubeVideResoloution
 
 
 logging.basicConfig(filename="log.txt", filemode="a",format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -386,13 +390,34 @@ class NewMessageHandlers(HandlerBase):
         url = event.message.message
 
         match = Regexs(url=url)
+        
 
         if match.is_instagram:
             await event.reply("SoundCloud : Comming Soon 💜")
+            
+            if match.is_instagram_reels:
+                pass
+            
+            elif match.is_instagram_post:
+                pass
+            
+            elif match.is_instagram_story:
+                pass
+            
+            else:
+                pass
 
         elif match.is_youtube:
-            await event.reply("SoundCloud : Comming Soon ❤")
-
+            yt_client = Youtube(event.message.message)
+            if event.is_private:
+                await event.reply("SoundCloud : Comming Soon ❤, Private")
+            
+            elif event.is_group:
+                await event.reply("SoundCloud : Comming Soon ❤, Group")
+                video = yt_client.download_video(resolution=YoutubeVideResoloution.R_480P.value)
+                await client.send_file(event.chat_id, file=video, caption=yt_client.youtube_client.channel_url)
+                os.remove(video)
+            
         elif match.is_soundcloud:
             await event.reply("SoundCloud : Comming Soon 🧡")
 
