@@ -392,16 +392,16 @@ class NewMessageHandlers(HandlerBase):
         match = Regexs(url=url)
         
 
-        # if match.is_instagram:
+        if match.is_instagram:
             
-        #     if match.is_instagram_reels:
-        #         await event.reply("Instagram : Comming Soon 💜, Reels")
+            if match.is_instagram_reels:
+                await event.reply("Instagram : Comming Soon 💜, Reels")
             
-        #     elif match.is_instagram_post:
-        #         await event.reply("Instagram : Comming Soon 💜, Post")
+            elif match.is_instagram_post:
+                await event.reply("Instagram : Comming Soon 💜, Post")
             
-        #     elif match.is_instagram_story:
-        #         await event.reply("Instagram : Comming Soon 💜, Story")
+            elif match.is_instagram_story:
+                await event.reply("Instagram : Comming Soon 💜, Story")
 
         if match.is_youtube:
             yt_client = Youtube(event.message.message)
