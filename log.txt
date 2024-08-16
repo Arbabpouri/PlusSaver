@@ -1,0 +1,60 @@
+2024-08-16 13:36:42,102 - telethon.client.updates - ERROR - Unhandled exception on get_url
+Traceback (most recent call last):
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/updates.py", line 570, in _dispatch_update
+    await callback(event)
+  File "/home/mohammad/Documents/code/projects/PlusSaver/modules/handlers/handlers.py", line 399, in get_url
+    await client.send_file(event.chat_id, file=event.message.message, caption='insta')
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/uploads.py", line 430, in send_file
+    return self._get_response_message(request, await self(request), entity)
+                                               ^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/users.py", line 30, in __call__
+    return await self._call(self._sender, request, ordered=ordered)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/users.py", line 87, in _call
+    result = await future
+             ^^^^^^^^^^^^
+telethon.errors.rpcerrorlist.MediaEmptyError: The provided media object is invalid or the current account may not be able to send it (such as games as users) (caused by SendMediaRequest)
+2024-08-16 13:36:55,181 - telethon.client.updates - ERROR - Unhandled exception on get_url
+Traceback (most recent call last):
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/updates.py", line 570, in _dispatch_update
+    await callback(event)
+  File "/home/mohammad/Documents/code/projects/PlusSaver/modules/handlers/handlers.py", line 399, in get_url
+    await client.send_file(event.chat_id, file=event.message.message, caption='insta')
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/uploads.py", line 430, in send_file
+    return self._get_response_message(request, await self(request), entity)
+                                               ^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/users.py", line 30, in __call__
+    return await self._call(self._sender, request, ordered=ordered)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/users.py", line 87, in _call
+    result = await future
+             ^^^^^^^^^^^^
+telethon.errors.rpcerrorlist.MediaEmptyError: The provided media object is invalid or the current account may not be able to send it (such as games as users) (caused by SendMediaRequest)
+2024-08-16 13:38:08,637 - telethon.network.mtprotosender - INFO - Disconnecting from 149.154.167.92:443/TcpFull...
+2024-08-16 13:38:08,638 - telethon.network.mtprotosender - INFO - Disconnection from 149.154.167.92:443/TcpFull complete!
+2024-08-16 13:38:08,638 - telethon.network.mtprotosender - INFO - Not disconnecting (already have no connection)
+2024-08-16 13:38:22,071 - telethon.client.updates - ERROR - Unhandled exception on get_url
+Traceback (most recent call last):
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/updates.py", line 570, in _dispatch_update
+    await callback(event)
+  File "/home/mohammad/Documents/code/projects/PlusSaver/modules/handlers/handlers.py", line 399, in get_url
+    await client.send_file(event.chat_id, file=event.message.message.replace('instagram.com', 'ddinstagram.com'), caption='insta')
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/uploads.py", line 430, in send_file
+    return self._get_response_message(request, await self(request), entity)
+                                               ^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/users.py", line 30, in __call__
+    return await self._call(self._sender, request, ordered=ordered)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/.venv/lib/python3.11/site-packages/telethon/client/users.py", line 87, in _call
+    result = await future
+             ^^^^^^^^^^^^
+telethon.errors.rpcerrorlist.WebpageCurlFailedError: Failure while fetching the webpage with cURL (caused by SendMediaRequest)
+2024-08-16 13:39:00,310 - telethon.network.mtprotosender - INFO - Disconnecting from 149.154.167.92:443/TcpFull...
+2024-08-16 13:39:00,310 - telethon.network.mtprotosender - INFO - Disconnection from 149.154.167.92:443/TcpFull complete!
+2024-08-16 13:39:00,311 - telethon.network.mtprotosender - INFO - Not disconnecting (already have no connection)
+2024-08-16 13:39:31,736 - telethon.network.mtprotosender - INFO - Disconnecting from 149.154.167.92:443/TcpFull...
+2024-08-16 13:39:31,736 - telethon.network.mtprotosender - INFO - Disconnection from 149.154.167.92:443/TcpFull complete!
+2024-08-16 13:39:31,737 - telethon.network.mtprotosender - INFO - Not disconnecting (already have no connection)
+2024-08-16 13:49:10,790 - telethon.network.mtprotosender - INFO - Disconnecting from 149.154.167.92:443/TcpFull...
+2024-08-16 13:49:10,795 - telethon.network.mtprotosender - INFO - Disconnection from 149.154.167.92:443/TcpFull complete!
+2024-08-16 13:49:10,796 - telethon.network.mtprotosender - INFO - Not disconnecting (already have no connection)

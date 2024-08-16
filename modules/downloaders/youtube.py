@@ -24,8 +24,21 @@ class Youtube:
         resolutions = self.youtube_client.streams.all()
         return resolutions
 
-    def download_music(self):
-        pass
+    def download_music(self) -> MediaDownloaded:
+        """_summary_
+
+        Returns:
+            MediaDownloaded: _description_
+        """
+        
+        try:
+            music = self.youtube_client.streams.get_audio_only(subtype='mp3').download(self.save_music_address)
+            media = MediaDownloaded(PATH=music, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description)
+        except Exception as e:
+            print("Error in download_video method: ", e)
+            media = MediaDownloaded()
+        
+        return media
 
     def download_video(self, resolution: Optional[str] = YoutubeVideResoloution.R_144P.value) -> MediaDownloaded:
         """download_video method for download vide from youtube with custom resolution

@@ -395,7 +395,7 @@ class NewMessageHandlers(HandlerBase):
         if match.is_instagram:
             
             if match.is_instagram_reels:
-                await event.reply("Instagram : Comming Soon 💜, Reels")
+                await event.reply("Instagram : Comming Soon 💜, Post")
             
             elif match.is_instagram_post:
                 await event.reply("Instagram : Comming Soon 💜, Post")

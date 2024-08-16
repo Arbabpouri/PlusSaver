@@ -11,9 +11,9 @@ class Regexs:
         self.soundcloud_regex = r"^(?:https?:\/\/)((?:www\.)|(?:m\.))?soundcloud\.com\/[a-z0-9](?!.*?(-|_){2})[\w-]{1,23}[a-z0-9](?:\/.+)?$"
         self.spotify_regex = r"^(spotify:|https:\/\/[a-z]+\.spotify\.com\/)"
         self.tiktok_regex = r"(?:http(?:s)?:\/\/)?(?:(?:www)\.(?:tiktok\.com)(?:\/)(?!foryou)(@[a-zA-z0-9]+)(?:\/)(?:video)(?:\/)([\d]+)|(?:m)\.(?:tiktok\.com)(?:\/)(?!foryou)(?:v)(?:\/)?(?=([\d]+)\.html))"
-        self.instagram_story_regex = r""
-        self.instagram_reels_regex = r""
-        self.instagram_post_regex = r""
+        self.instagram_story_regex = r"https?:\/\/(?:www.)?instagram.com\/stories\/([^\/?#&]+).*"
+        self.instagram_reels_regex = r"https?:\/\/(?:www.)?instagram.com\/reel\/([^\/?#&]+).*"
+        self.instagram_post_regex = r"https?:\/\/(?:www.)?instagram.com\/p\/([^\/?#&]+).*"
     
     @property
     def is_instagram(self) -> bool:
