@@ -12,8 +12,10 @@ def main():
     client.add_event_handler(callback=NewMessageGetInformationsHandlers.admin, event=NewMessage(func=get_informations_admin))
     client.add_event_handler(callback=NewMessageHandlers.user, event=NewMessage(func=user_move_text))
     client.add_event_handler(callback=NewMessageHandlers.admin, event=NewMessage(func=admin_move_text))
+    client.add_event_handler(callback=NewMessageHandlers.get_url, event=NewMessage())
     client.add_event_handler(callback=CallBackQueryHandlers.user, event=CallbackQuery(func=user_move_inline))
     client.add_event_handler(callback=CallBackQueryHandlers.admin, event=CallbackQuery(func=admin_move_inline))
+    
 
     print("Bot Runned")
     client.run_until_disconnected()

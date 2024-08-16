@@ -12,7 +12,7 @@ import logging
 import shutil
 import os
 
-from ..downloaders import  Youtube
+from ..downloaders import Youtube, SoundCloud
 from config import Strings, BotConfig
 from .buttons import InlineButtonsData, InlineButtons, TextButtons, TextButtonsString, UrlButtons
 from ..database import User, Channel, Session, engine, Configs
@@ -392,30 +392,46 @@ class NewMessageHandlers(HandlerBase):
         match = Regexs(url=url)
         
 
-        if match.is_instagram:
+        # if match.is_instagram:
             
-            if match.is_instagram_reels:
-                await event.reply("SoundCloud : Comming Soon 💜, Reels")
+        #     if match.is_instagram_reels:
+        #         await event.reply("Instagram : Comming Soon 💜, Reels")
             
-            elif match.is_instagram_post:
-                await event.reply("SoundCloud : Comming Soon 💜, Post")
+        #     elif match.is_instagram_post:
+        #         await event.reply("Instagram : Comming Soon 💜, Post")
             
-            elif match.is_instagram_story:
-                await event.reply("SoundCloud : Comming Soon 💜, Story")
+        #     elif match.is_instagram_story:
+        #         await event.reply("Instagram : Comming Soon 💜, Story")
 
-        elif match.is_youtube:
+        if match.is_youtube:
             yt_client = Youtube(event.message.message)
             if event.is_private:
-                await event.reply("SoundCloud : Comming Soon ❤, Private")
+                await event.reply("Youtube : Comming Soon ❤, Private")
             
             elif event.is_group:
-                await event.reply("SoundCloud : Comming Soon ❤, Group")
+                await event.reply("Youtube : Comming Soon ❤, Group")
                 video = yt_client.download_video(resolution=YoutubeVideResoloution.R_480P.value)
-                await client.send_file(event.chat_id, file=video, caption=yt_client.youtube_client.channel_url)
-                os.remove(video)
+                if video.PATH:
+                    
+                    await client.send_file(event.chat_id, file=video.PATH, caption=f"{video.TITLE}\n{video.CAPTION}", reply_to=event.id)
+                    os.remove(video)
+                    
+                else:
+                    await event.reply('not found')
             
         elif match.is_soundcloud:
-            await event.reply("SoundCloud : Comming Soon 🧡")
+            message = await event.reply('wait')
+            soundcloud_client = SoundCloud(event.message.message)
+            music = soundcloud_client.download_music()
+            if music.PATH:
+                
+                await message.edit('Uploading . . .')
+                await client.send_file(event.chat_id, file=music.PATH, caption=f"{music.TITLE}\n{music.CAPTION}", reply_to=event.id)
+                await message.delete()
+                os.remove(music.PATH)
+            
+            else:
+                await event.reply('not found')
 
         elif match.is_spotify:
             await event.reply("Spotify : Comming Soon 💚")
@@ -423,8 +439,6 @@ class NewMessageHandlers(HandlerBase):
         elif match.is_tiktok:
             await event.reply("TikTok : Comming Soon 🖤")
 
-        else:
-            await event.reply('bad url')
 
 
 class NewMessageGetInformationsHandlers(HandlerBase):
