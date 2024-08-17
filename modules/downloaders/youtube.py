@@ -3,14 +3,12 @@ from typing import Optional
 from .shcemas import MediaDownloaded
 from ..regexs import Regexs
 from ..enums import YoutubeVideResoloution
+from .base import BaseDownloader
 
-
-class Youtube:
+class Youtube(BaseDownloader):
     
     def __init__(self, url: str) -> None:
-        self.url = url
-        self.save_video_address = r"./download/youtube/video"
-        self.save_music_address = r"./download/youtube/music"
+        super().__init__(url)
         self.youtube_client = YouTube(self.url)
 
     def get_resolutions(self) -> list:
@@ -32,7 +30,7 @@ class Youtube:
         """
         
         try:
-            music = self.youtube_client.streams.get_audio_only(subtype='mp3').download(self.save_music_address)
+            music = self.youtube_client.streams.get_audio_only(subtype='mp3').download(self.save_music_path)
             media = MediaDownloaded(PATH=music, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description)
         except Exception as e:
             print("Error in download_video method: ", e)
@@ -55,7 +53,7 @@ class Youtube:
         """
         
         try:
-            video = self.youtube_client.streams.get_by_resolution(resolution).download(self.save_music_address)
+            video = self.youtube_client.streams.get_by_resolution(resolution).download(self.save_video_path)
             media = MediaDownloaded(PATH=video, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description)
         except Exception as e:
             print("Error in download_video method: ", e)

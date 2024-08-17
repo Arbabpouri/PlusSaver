@@ -1,12 +1,12 @@
 from sclib import SoundcloudAPI, Track
 from .shcemas import MediaDownloaded
+from .base import BaseDownloader
 
 
-class SoundCloud:
+class SoundCloud(BaseDownloader):
     
     def __init__(self, url: str) -> None:
-        self.url = url
-        self.save_address = r"./download/soundcloud/music"
+        super().__init__(url)
         self.soundcloud_client = SoundcloudAPI()
         
         
@@ -21,7 +21,7 @@ class SoundCloud:
             
             music = self.soundcloud_client.resolve(self.url)
             
-            filename = rf'{self.save_address}/{music.title}.mp3'
+            filename = rf'{self.save_music_path}/{music.title}.mp3'
 
             with open(filename, 'wb+') as file:
                 music.write_mp3_to(file)

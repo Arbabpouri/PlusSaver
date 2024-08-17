@@ -12,7 +12,7 @@ import logging
 import shutil
 import os
 
-from ..downloaders import Youtube, SoundCloud
+from ..downloaders import Youtube, SoundCloud, Instagram
 from config import Strings, BotConfig
 from .buttons import InlineButtonsData, InlineButtons, TextButtons, TextButtonsString, UrlButtons
 from ..database import User, Channel, Session, engine, Configs
@@ -398,6 +398,7 @@ class NewMessageHandlers(HandlerBase):
                 await event.reply("Instagram : Comming Soon 💜, Post")
             
             elif match.is_instagram_post:
+                Instagram(event.message.message).download_post()
                 await event.reply("Instagram : Comming Soon 💜, Post")
             
             elif match.is_instagram_story:
