@@ -14,6 +14,7 @@ class Regexs:
         self.instagram_story_regex = r"https?:\/\/(?:www.)?instagram.com\/stories\/([^\/?#&]+).*"
         self.instagram_reels_regex = r"https?:\/\/(?:www.)?instagram.com\/reel\/([^\/?#&]+).*"
         self.instagram_post_regex = r"https?:\/\/(?:www.)?instagram.com\/p\/([^\/?#&]+).*"
+        self.pinterest_regex = r"^(http(s?):\/{2})?(w{3}.)?pinterest\.com/pin/\d+"
     
     @property
     def is_instagram(self) -> bool:
@@ -50,3 +51,8 @@ class Regexs:
     @property
     def is_tiktok(self) -> bool:
         return bool(re.match(pattern=self.tiktok_regex, string=self.url))
+
+    @property
+    def is_pinterest(self) -> bool:
+        return bool(re.match(pattern=self.pinterest_regex, string=self.url))
+    

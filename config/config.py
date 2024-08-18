@@ -15,6 +15,7 @@ class BotConfig:
     DEFULT_ENTRY_PRIZE = 5000
     DEFULT_REFERRAL_BONUS = 1000
     TEXT_LONG = 3000
+    MEDIAS_CHANNEL_ID = 123456789
     DEFULT_RULES_TEXT = (
         "### Download Bot Usage Rules 📥\n\n"
 

@@ -1,7 +1,7 @@
 from shcemas import MediaDownloaded
 from base import BaseDownloader
 
-class Painterest(BaseDownloader):
+class Pinterest(BaseDownloader):
     
     def __init__(self, url: str) -> None:
         super().__init__(url)
