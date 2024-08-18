@@ -63,12 +63,11 @@ class InlineButtonsData:
     CHANGE_ENTERY_PRIZE = "CHANGE_ENTERY_PRIZE"
     CHANGE_TRUST_CHANNEL = "CHANGE_TRUST_CHANNEL"
     CHANGE_REFERRAL_BONUS = "CHANGE_REFERRAL_BONUS"
-    JOINED_IN_CHANNEL = "JOINED_IN_CHANNEL_"
+    JOINED_IN_CHANNEL = "JOINED_CHANNEL"
     BACK_TO_ADMIN = "BACK_TO_ADMIN"
     DONWLOAD_RESOLUTION = "DONWLOAD_RESOLUTION_"
     download_resulotion = lambda resolution: f"{InlineButtonsData.DONWLOAD_RESOLUTION}{resolution}"
     delete_channel = lambda channel_id: f"{InlineButtonsData.DELETE_CHANNEL}{channel_id}"
-    joined_in_channel = lambda user_id: f"{InlineButtonsData.JOINED_IN_CHANNEL}{user_id}"
     
 
 class InlineButtonString:
@@ -172,6 +171,10 @@ class InlineButtons:
         BACK_TO_ADMIN
     )
 
+    CHECK_JOINED = (
+        Button.inline(text=InlineButtonString.JOINED_IN_CHANNEL, data=InlineButtonsData.JOINED_IN_CHANNEL),
+    )
+
     @staticmethod
     def channels_panel(channels: Iterable[Channel]) -> List[Tuple[Channel]]:
         
@@ -193,11 +196,6 @@ class InlineButtons:
         buttons.append(InlineButtons.BACK_TO_ADMIN)
 
         return buttons
-
-
-    @staticmethod
-    def check_joined(user_id: int | None = None) -> Tuple[Button]:
-        return Button.inline(text=InlineButtonString.JOINED_IN_CHANNEL, data=InlineButtonsData.joined_in_channel(user_id))
         
         
     @staticmethod
@@ -251,7 +249,7 @@ class UrlButtons:
     
 
     @staticmethod
-    def channels_locked(channels: Iterable[Channel], invited_user_id: int | None = None) -> List[Tuple[Button]]:
+    def channels_locked(channels: Iterable[Channel]) -> List[Tuple[Button]]:
         
         buttons = []
 
@@ -262,7 +260,7 @@ class UrlButtons:
             except Exception as e:
                 print(e)
 
-        buttons.append((InlineButtons.check_joined(invited_user_id),))
+        buttons.append(InlineButtons.CHECK_JOINED)
 
         return buttons
 

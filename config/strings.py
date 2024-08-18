@@ -52,34 +52,6 @@ class Strings:
             f"🔐 | کانال های قفل شده : {channels}\n"
         )
     
-    # @staticmethod
-    # def my_account(user: User) -> str:
-    #     return (
-    #         f"🔢 شناسه عددی : <code>{user.user_id}</code>\n\n"
-    #         f"💳 موجودی شما : {user.balance:,} تومان\n\n"
-    #         f"👥 تعداد زیر مجموعه های شما : {len(user.user_referrals)}"
-    #     )
-    
-    # @staticmethod
-    # def referral_banner(user_id: int, referral_info: Configs) -> str:
-    #     return (
-    #         "⚠️ با تاس🎲 انداختن پول در بیار!\n\n"
-
-    #         "ربات زیر با تاس🎲 انداختن پول میده باورت میشه؟ :)\n\n"
-
-    #         f"🎁 به کاربرای جدید هم {referral_info.entry_prize:,} تومان هدیه خوش آمدگویی میده از دستش نده 🥳👇\n\n"
-
-    #         f"https://t.me/{BotConfig.BOT_USERNAME}/?start={user_id}"
-    #     )
-    
-    # @staticmethod
-    # def referral_reply(user: User, referral_info: Configs) -> str:
-    #     return (
-    #         f"⚠️ بنر بالا را برای دوستانتان ارسال کنید و به ازای هر شخصی که با لینک شما در ربات عضو شود {referral_info.referral_bonus:,} تومان اعتبار هدیه دریافت خواهید کرد.\n\n"
-
-    #         f"👥 تعداد زیرمجموعه شما: {len(user.user_referrals)}"
-    #     )
-    
     @staticmethod
     def show_admins(admins: Iterable[User]) -> str:
         message = "👥 ادمین ها : \n\n"
@@ -100,10 +72,3 @@ class Strings:
             f"🔸 title : {channel.channel_name}\n"
             f"🔸 url : {channel.channel_url}\n"
         )
-    
-    # @staticmethod
-    # def referral_bonus(invited_user_id: int, amount: int) -> str:
-    #     return (
-    #         f"💰 کاربر عزیز شما زیر مجموعه جدید گرفتید به ایدی <code>{invited_user_id}</code> و مقدار {amount:,} به شما داده شد"
-    #     )
-    

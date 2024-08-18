@@ -1,7 +1,6 @@
 from pytube import YouTube
 from typing import Optional
 from .shcemas import MediaDownloaded
-from ..regexs import Regexs
 from ..enums import YoutubeVideResoloution
 from .base import BaseDownloader
 
@@ -60,3 +59,4 @@ class Youtube(BaseDownloader):
             media = MediaDownloaded()
         
         return media
+        

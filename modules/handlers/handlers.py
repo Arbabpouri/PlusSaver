@@ -26,7 +26,7 @@ logging.basicConfig(filename="log.txt", filemode="a",format='%(asctime)s - %(nam
 logger = logging.getLogger(__name__)
 
 
-async def check_join(user_id: int, invited_by_user_id: int | None = None) -> bool:
+async def check_join(user_id: int) -> bool:
 
     with Session(engine) as session:
         channels = session.query(Channel).all()
@@ -62,17 +62,17 @@ async def check_join(user_id: int, invited_by_user_id: int | None = None) -> boo
             except Exception as e:
                 print(e)
         if not_joined:
-            await client.send_message(PeerUser(user_id), Strings.JOIN_TO_CHANNELS, buttons=UrlButtons.channels_locked(not_joined, invited_by_user_id))
+            await client.send_message(PeerUser(user_id), Strings.JOIN_TO_CHANNELS, buttons=UrlButtons.channels_locked(not_joined))
             return False
         return True
 
 
 # function for add new users if not database
-async def add_user(user_id: int, invited_by_user_id: int | None = None) -> None:
+async def add_user(user_id: int) -> bool:
     
     with Session(engine) as session:
 
-        is_joined = await check_join(user_id, invited_by_user_id)
+        is_joined = await check_join(user_id)
 
         user = session.query(User).filter_by(user_id=int(user_id)).first()
 
@@ -80,40 +80,13 @@ async def add_user(user_id: int, invited_by_user_id: int | None = None) -> None:
 
             configs = session.query(Configs).first()
             user = User(user_id=int(user_id), balance=configs.entry_prize)
-            
-            # if invited_by_user_id and str(invited_by_user_id).isnumeric():
-            #     inviter_user = session.query(User).filter_by(user_id=int(invited_by_user_id)).first()
-            #     if inviter_user:
-            #         user.invited_by = inviter_user.id
-            #         user.referral_active = False
-            #         if is_joined:
-            #             user.referral_active = True
-            #             inviter_user.balance += configs.referral_bonus
-            #             try:
-            #                 await client.send_message(PeerUser(inviter_user.user_id), Strings.referral_bonus(user.user_id, configs.referral_bonus), parse_mode="html")
-            #             except Exception as e:
-            #                 print(e)
 
             session.add(user)
             session.commit()
-            # return True
+
         if is_joined:
             return True
-        
-        # elif user and user.referral_active == False and user.invited_by and is_joined:
-        #     user.referral_active = True
-        #     configs = session.query(Configs).first()
-        #     inviter = session.query(User).filter_by(id=int(user.invited_by)).first()
-        #     inviter.balance += configs.referral_bonus
-        #     try:
-        #         await client.send_message(PeerUser(inviter.user_id), Strings.referral_bonus(user.user_id, configs.referral_bonus), parse_mode="html")
-        #     except Exception as e:
-        #         print(e)
-        #     session.commit()
-        #     return True
-        
-        # else:
-        #     return is_joined
+        return False
                
 
 # del user from step
@@ -163,16 +136,8 @@ class CallBackQueryHandlers(HandlerBase):
         try:
 
             data = str(event.data.decode())
-            invited_by_user_id = None
 
-            if data.startswith(InlineButtonsData.JOINED_IN_CHANNEL):
-                
-                invited_by = data.replace(InlineButtonsData.JOINED_IN_CHANNEL, '')
-                data = InlineButtonsData.JOINED_IN_CHANNEL
-                if invited_by.isnumeric():
-                    invited_by_user_id = int(invited_by)
-
-            if not await add_user(event.sender_id, invited_by_user_id):
+            if not await add_user(event.sender_id):
                 return
         
             match (data):
@@ -302,17 +267,8 @@ class NewMessageHandlers(HandlerBase):
         try:
 
             text = str(event.message.message)
-            invited_by_user_id = None
 
-            # this condition for get referraler user id
-            # if text.startswith("/start "):
-                
-            #     invited_by = text.replace("/start ", '')
-            #     text = TextButtonsString.START_COMMAND
-            #     if invited_by.isnumeric():
-            #         invited_by_user_id = int(invited_by)
-
-            if not await add_user(event.sender_id, invited_by_user_id):
+            if not await add_user(event.sender_id):
                 return            
             
             match (text):
@@ -341,21 +297,6 @@ class NewMessageHandlers(HandlerBase):
                 case TextButtonsString.CREATOR:
                     await client.send_message(entity=event.chat_id, message=Strings.CREATOR)
 
-                # case TextButtonsString.MY_ACCOUNT:
-                #     with Session(engine) as session:
-                #         user = session.query(User).filter_by(user_id=int(event.sender_id)).first()
-                #         await client.send_message(entity=event.chat_id, message=Strings.my_account(user), parse_mode='html')
-
-                # case TextButtonsString.REFERRAL:
-                #     with Session(engine) as session:
-
-                #         user = session.query(User).filter_by(user_id=int(event.sender_id)).first()
-                #         configs = session.query(Configs).first()
-
-                #         message = await client.send_file(entity=event.chat_id, file=BotConfig.REFERRAL_IMAGE_ADDRESS, caption=Strings.referral_banner(event.sender_id, configs))
-                #         await client.send_message(entity=event.chat_id, message=Strings.referral_reply(user, configs), buttons=TextButtons.DEPOSIT_PLAN, reply_to=message)
-
-                
         except Exception as e:
             print(e)
 
@@ -440,6 +381,8 @@ class NewMessageHandlers(HandlerBase):
         elif match.is_tiktok:
             await event.reply("TikTok : Comming Soon 🖤")
 
+        elif match.is_pinterest:
+            pass
 
 
 class NewMessageGetInformationsHandlers(HandlerBase):
