@@ -33,6 +33,12 @@ class Configs(Base):
     rules_text: Mapped[str] = mapped_column(Text(BotConfig.TEXT_LONG), default=BotConfig.DEFULT_RULES_TEXT)
     entry_prize: Mapped[int] = mapped_column(Integer, default=BotConfig.DEFULT_ENTRY_PRIZE)
     referral_bonus: Mapped[int] = mapped_column(Integer, default=BotConfig.DEFULT_REFERRAL_BONUS)
+    
+
+class Media(Base):
+    __tablename__ = "medias"
+    media_downloaded_url: Mapped[str] = mapped_column(String(length=500))
+    media_uploaded_url: Mapped[str] = mapped_column(String(length=500))
 
 
 engine = create_engine("sqlite:///database.db", echo=False, pool_size=60, max_overflow=35, pool_timeout=120.0)
