@@ -32,9 +32,26 @@ async def send_media(event, media: MediaDownloaded) -> None:
                 
         message = await client.send_message(event.chat_id, Strings.UPLOADING)
         await client.send_file(event.chat_id, file=media.PATH, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+        
         await message.delete()
-        os.remove(media.PATH)
-                
+        
+        try:
+            
+            media_saved = await client.send_file(PeerChannel(BotConfig.MEDIAS_CHANNEL_ID), file=media.PATH, caption=Strings.media_geted(media.TITLE, media.CAPTION))
+            
+            with Session(engine) as session:
+                media = Media(media_downloaded_url=media.str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
+                session.add(media)
+                session.commit()
+        
+        except Exception as e:
+            pass
+        
+        try:
+            os.remove(media.PATH)
+        except Exception:
+            pass
+            
     elif media.RESULT is False:
         await event.reply(Strings.MEDIA_GET_ERROR)
     
