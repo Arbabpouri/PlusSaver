@@ -1,4 +1,5 @@
 from pytube import YouTube
+from pytube.exceptions import VideoUnavailable
 from typing import Optional
 from .shcemas import MediaDownloaded
 from ..enums import YoutubeVideResoloution
@@ -30,10 +31,14 @@ class Youtube(BaseDownloader):
         
         try:
             music = self.youtube_client.streams.get_audio_only(subtype='mp3').download(self.save_music_path)
-            media = MediaDownloaded(PATH=music, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description)
+            media = MediaDownloaded(PATH=music, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
+        
+        except VideoUnavailable:
+            media = MediaDownloaded(RESULT=None)
+        
         except Exception as e:
             print("Error in download_video method: ", e)
-            media = MediaDownloaded()
+            media = MediaDownloaded(RESULT=False)
         
         return media
 
@@ -53,10 +58,13 @@ class Youtube(BaseDownloader):
         
         try:
             video = self.youtube_client.streams.get_by_resolution(resolution).download(self.save_video_path)
-            media = MediaDownloaded(PATH=video, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description)
+            media = MediaDownloaded(PATH=video, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
+        except VideoUnavailable:
+            media = MediaDownloaded(RESULT=None)
+        
         except Exception as e:
             print("Error in download_video method: ", e)
-            media = MediaDownloaded()
+            media = MediaDownloaded(RESULT=False)
         
         return media
         

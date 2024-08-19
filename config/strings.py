@@ -36,6 +36,17 @@ class Strings:
     JOIN_TO_CHANNELS = "⚠ برای فعالیت در ربات باید عضو کانال های زیر بشوید"
     CREATOR = f"👨‍💻 - https://t.me/{BotConfig.SUPPORT_USERNAME}"
     DONATE = f"❤ come to my pv {TextButtonsString.CONTACT_US_COMMAND}"
+    
+    
+    MEDIA_NOT_FOUND = ""
+    MEDIA_GET_ERROR = ""
+    MEDIA_GETED = ""
+    UPLOADING = ""
+    DOWNLOADING = ""
+    PLEASE_WAIT = ""
+    COMMING_SOON = ""
+    SELECT = ""
+    
 
     START_MENU = (
         "🤖 Hi, I'm a fast downloader of videos and audios from Instagram, TikTok, YouTube, Likee and Pinterest.\n\n"
@@ -44,6 +55,15 @@ class Strings:
 
         "(Now I can also upload media in groups, you need me in your group for that)\n\n"
     )
+    
+    
+    @staticmethod
+    def media_geted(title: str, caption: str) -> str:
+        return (
+            ""
+            ""
+            ""
+        )
 
     @staticmethod
     def bot_stats(users: int, channels: int) -> str:

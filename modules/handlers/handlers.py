@@ -12,7 +12,7 @@ import logging
 import shutil
 import os
 
-from ..downloaders import Youtube, SoundCloud, Instagram
+from ..downloaders import Youtube, SoundCloud, Instagram, MediaDownloaded
 from config import Strings, BotConfig
 from .buttons import InlineButtonsData, InlineButtons, TextButtons, TextButtonsString, UrlButtons
 from ..database import User, Channel, Session, engine, Configs
@@ -24,6 +24,22 @@ from ..enums import YoutubeVideResoloution
 
 logging.basicConfig(filename="log.txt", filemode="a",format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+async def send_media(event, media: MediaDownloaded) -> None:
+    
+    if media.RESULT is True:
+                
+        message = await client.send_message(event.chat_id, Strings.UPLOADING)
+        await client.send_file(event.chat_id, file=media.PATH, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+        await message.delete()
+        os.remove(media.PATH)
+                
+    elif media.RESULT is False:
+        await event.reply(Strings.MEDIA_GET_ERROR)
+    
+    elif media.RESULT is None:
+        await event.reply(Strings.MEDIA_NOT_FOUND)
 
 
 async def check_join(user_id: int) -> bool:
@@ -336,53 +352,33 @@ class NewMessageHandlers(HandlerBase):
         if match.is_instagram:
             
             if match.is_instagram_reels:
-                await event.reply("Instagram : Comming Soon 💜, Post")
+                await event.reply(Strings.COMMING_SOON)
             
             elif match.is_instagram_post:
                 Instagram(event.message.message).download_post()
-                await event.reply("Instagram : Comming Soon 💜, Post")
+                await event.reply(Strings.COMMING_SOON)
             
             elif match.is_instagram_story:
-                await event.reply("Instagram : Comming Soon 💜, Story")
+                await event.reply(Strings.COMMING_SOON)
 
-        if match.is_youtube:
-            yt_client = Youtube(event.message.message)
-            if event.is_private:
-                await event.reply("Youtube : Comming Soon ❤, Private")
-            
-            elif event.is_group:
-                await event.reply("Youtube : Comming Soon ❤, Group")
-                video = yt_client.download_video(resolution=YoutubeVideResoloution.R_480P.value)
-                if video.PATH:
-                    
-                    await client.send_file(event.chat_id, file=video.PATH, caption=f"{video.TITLE}\n{video.CAPTION}", reply_to=event.id)
-                    os.remove(video)
-                    
-                else:
-                    await event.reply('not found')
-            
+        elif match.is_youtube:
+            await event.reply(Strings.COMMING_SOON)
+        
         elif match.is_soundcloud:
             message = await event.reply('wait')
             soundcloud_client = SoundCloud(event.message.message)
             music = soundcloud_client.download_music()
-            if music.PATH:
-                
-                await message.edit('Uploading . . .')
-                await client.send_file(event.chat_id, file=music.PATH, caption=f"{music.TITLE}\n{music.CAPTION}", reply_to=event.id)
-                await message.delete()
-                os.remove(music.PATH)
-            
-            else:
-                await event.reply('not found')
+            await message.delete()
+            await send_media(event, music)
 
         elif match.is_spotify:
-            await event.reply("Spotify : Comming Soon 💚")
+            await event.reply(Strings.COMMING_SOON)
 
         elif match.is_tiktok:
-            await event.reply("TikTok : Comming Soon 🖤")
+            await event.reply(Strings.COMMING_SOON)
 
         elif match.is_pinterest:
-            pass
+            await event.reply(Strings.COMMING_SOON)
 
 
 class NewMessageGetInformationsHandlers(HandlerBase):
