@@ -38,14 +38,14 @@ class Strings:
     DONATE = f"❤ come to my pv {TextButtonsString.CONTACT_US_COMMAND}"
     
     
-    MEDIA_NOT_FOUND = ""
-    MEDIA_GET_ERROR = ""
-    MEDIA_GETED = ""
-    UPLOADING = ""
-    DOWNLOADING = ""
-    PLEASE_WAIT = ""
-    COMMING_SOON = ""
-    SELECT = ""
+    MEDIA_NOT_FOUND = "❌🔍 Media Not Found . . ."
+    MEDIA_GET_ERROR = "❌ Error - ♻️ Try Again"
+    MEDIA_GETED = "✅ Media Downloaded"
+    UPLOADING = "📤 Uploading . . ."
+    DOWNLOADING = "📥 Downloading . . ."
+    PLEASE_WAIT = "⏳ Please Wait . . ."
+    COMMING_SOON = "⁉️ Comming Soon . . .♻️"
+    SELECT = "👇 Select an item ..."
     
 
     START_MENU = (
@@ -60,9 +60,9 @@ class Strings:
     @staticmethod
     def media_geted(title: str, caption: str) -> str:
         return (
-            ""
-            ""
-            ""
+            f"{Strings.MEDIA_GETED}\n"
+            f"📌 - Title : {title}"
+            f"💬 - Description : {caption}"
         )
 
     @staticmethod

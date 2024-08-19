@@ -12,10 +12,10 @@ import logging
 import shutil
 import os
 
-from ..downloaders import Youtube, SoundCloud, Instagram, MediaDownloaded
+from ..downloaders import Youtube, SoundCloud, Instagram, MediaDownloaded, Pinterest
 from config import Strings, BotConfig
 from .buttons import InlineButtonsData, InlineButtons, TextButtons, TextButtonsString, UrlButtons
-from ..database import User, Channel, Session, engine, Configs
+from ..database import User, Channel, Session, engine, Configs, Media
 from .app import client
 from .step import Step, step_limit, Permission
 from ..regexs import Regexs
@@ -40,6 +40,34 @@ async def send_media(event, media: MediaDownloaded) -> None:
     
     elif media.RESULT is None:
         await event.reply(Strings.MEDIA_NOT_FOUND)
+
+
+async def check_and_send_media_from_db(event, url: str) -> bool:
+    with Session(engine) as session:
+        media = session.query(Media).filter_by(media_downloaded_url=str(url)).first()
+        if not media:
+            return False
+        
+        try:
+                
+            message = await client.get_messages(
+                entity=PeerChannel(int(media.channel_id)),
+                ids=int(media.message_id)
+            )
+            
+            await client.send_message(
+                entity=event.chat_id,
+                message=message,
+                reply_to=event.id
+            )
+            
+            return True
+        
+        except Exception as e:
+            print("Error in check_and_send_media_from_db, error :", e)
+            session.delete(media)
+            session.commit()
+            return False
 
 
 async def check_join(user_id: int) -> bool:
@@ -355,7 +383,7 @@ class NewMessageHandlers(HandlerBase):
                 await event.reply(Strings.COMMING_SOON)
             
             elif match.is_instagram_post:
-                Instagram(event.message.message).download_post()
+                # Instagram(event.message.message).download_post()
                 await event.reply(Strings.COMMING_SOON)
             
             elif match.is_instagram_story:
@@ -365,20 +393,40 @@ class NewMessageHandlers(HandlerBase):
             await event.reply(Strings.COMMING_SOON)
         
         elif match.is_soundcloud:
-            message = await event.reply('wait')
-            soundcloud_client = SoundCloud(event.message.message)
-            music = soundcloud_client.download_music()
-            await message.delete()
-            await send_media(event, music)
+            
+            message = await event.reply(Strings.PLEASE_WAIT)
+            
+            if not await check_and_send_media_from_db(event, url):
+                
+                soundcloud_client = SoundCloud(event.message.message)
+                music = soundcloud_client.download_music()
+                await message.delete()
+                await send_media(event, music)
 
         elif match.is_spotify:
             await event.reply(Strings.COMMING_SOON)
 
         elif match.is_tiktok:
             await event.reply(Strings.COMMING_SOON)
+            
+            # message = await event.reply(Strings.PLEASE_WAIT)
+            
+            # if not await check_and_send_media_from_db(event, url):
+                
+            #     pinterest_client = Pinterest(event.message.message)
+            #     image = pinterest_client.download_image()
+            #     await message.delete()
+            #     await send_media(event, image)
 
         elif match.is_pinterest:
-            await event.reply(Strings.COMMING_SOON)
+            message = await event.reply(Strings.PLEASE_WAIT)
+            
+            if not await check_and_send_media_from_db(event, url):
+                
+                pinterest_client = Pinterest(event.message.message)
+                image = pinterest_client.download_image()
+                await message.delete()
+                await send_media(event, image)
 
 
 class NewMessageGetInformationsHandlers(HandlerBase):

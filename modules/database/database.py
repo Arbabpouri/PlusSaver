@@ -38,7 +38,8 @@ class Configs(Base):
 class Media(Base):
     __tablename__ = "medias"
     media_downloaded_url: Mapped[str] = mapped_column(String(length=500))
-    media_uploaded_url: Mapped[str] = mapped_column(String(length=500))
+    message_id: Mapped[int]
+    channel_id: Mapped[int]
 
 
 engine = create_engine("sqlite:///database.db", echo=False, pool_size=60, max_overflow=35, pool_timeout=120.0)
