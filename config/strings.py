@@ -62,7 +62,7 @@ class Strings:
         return (
             f"{Strings.MEDIA_GETED}\n"
             f"📌 - Title : {title}"
-            f"💬 - Description : {caption}"
+            f"💬 -Description : {caption}"
         )
 
     @staticmethod
