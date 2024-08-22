@@ -61,7 +61,7 @@ class Strings:
     def media_geted(title: str, caption: str) -> str:
         return (
             f"{Strings.MEDIA_GETED}\n"
-            f"📌 - Title : {title}"
+            f"📌 - Title : {title}\n\n"
             f"💬 -Description : {caption}"
         )
 

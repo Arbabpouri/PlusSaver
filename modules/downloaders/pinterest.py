@@ -1,5 +1,5 @@
-from shcemas import MediaDownloaded
-from base import BaseDownloader
+from .shcemas import MediaDownloaded
+from .base import BaseDownloader
 from bs4 import BeautifulSoup
 import requests
 

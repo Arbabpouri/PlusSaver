@@ -40,7 +40,7 @@ async def send_media(event, media: MediaDownloaded) -> None:
             media_saved = await client.send_file(PeerChannel(BotConfig.MEDIAS_CHANNEL_ID), file=media.PATH, caption=Strings.media_geted(media.TITLE, media.CAPTION))
             
             with Session(engine) as session:
-                media = Media(media_downloaded_url=media.str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
+                media = Media(media_downloaded_url=str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
                 session.add(media)
                 session.commit()
         
@@ -417,8 +417,9 @@ class NewMessageHandlers(HandlerBase):
                 
                 soundcloud_client = SoundCloud(event.message.message)
                 music = soundcloud_client.download_music()
-                await message.delete()
                 await send_media(event, music)
+            
+            await message.delete()
 
         elif match.is_spotify:
             await event.reply(Strings.COMMING_SOON)
@@ -442,8 +443,9 @@ class NewMessageHandlers(HandlerBase):
                 
                 pinterest_client = Pinterest(event.message.message)
                 image = pinterest_client.download_image()
-                await message.delete()
                 await send_media(event, image)
+            
+            await message.delete()
 
 
 class NewMessageGetInformationsHandlers(HandlerBase):
