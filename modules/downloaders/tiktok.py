@@ -1,6 +1,7 @@
 from .shcemas import MediaDownloaded
 from .base import BaseDownloader
 from bs4 import BeautifulSoup
+from uuid import uuid4
 import requests
 
 
@@ -8,85 +9,73 @@ class TikTok(BaseDownloader):
     
     def __init__(self, url: str) -> None:
         super().__init__(url)
-        self.__video_preload = "auto"
-        
+        self.__api_url = "https://ssstik.io/abc?url=dl"
+        self.__a_class_download_url = "pure-button pure-button-primary is-center u-bl dl-button download_link without_watermark vignette_active notranslate"
+        self.__p_class_caption = "maintext"
+        self.__header_tiktokcdn = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+            "Accept": "*/*",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Connection": "keep-alive",
+            # سایر هدرهای مورد نیاز
+        }
+        self.__header_ssstik = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+            'Accept-Language': 'en-US,en;q=0.9',
+        }
+            
+        self.__download_post_data = {
+            "id": self.url,
+            "locale": "en",
+            "tt": "MnZQcWQ2",
+        }
     
     def download_post(self) -> MediaDownloaded:
         
         try:
             
-            
-            
-            header = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
-                'Accept-Language': 'en-US,en;q=0.9',
-            }
-            info = requests.get("https://tiktok.com", headers=header)
-            print(info.cookies.items())
-            response = requests.get(self.url, headers=info.request.headers, cookies=info.cookies)
-            
+            request = requests.Session()
+                        
+            response =  request.post(self.__api_url, headers=self.__header_ssstik, data=self.__download_post_data)
+
             if response.status_code != 200:
                 return MediaDownloaded(RESULT=None)
-                        
-            soup = BeautifulSoup(response.text, 'html.parser')            
             
-            # video = soup.find("video", """attrs={"preload": self.__video_preload}""")
-            video = soup.find_all("video")
+            soup = BeautifulSoup(response.text, "html.parser")
             
-            print(video)
-            return
-            
-            if video and video.get('src'):
-                # caption = soup.find_all("span", attrs={"class": self.__caption_class})[-1].text or "no caption"
-                media = MediaDownloaded(
-                    PATH=video,
-                    TITLE=soup.select_one('title').text,
-                    CAPTION="caption",
-                    RESULT=True
-                )
-            
-            else:            
-                media = MediaDownloaded(RESULT=None)
+            download_url = soup.find("a", attrs={"class": self.__a_class_download_url})
+            if download_url:
+                                
+                video = request.get(download_url.get("href"), headers=self.__header_tiktokcdn, timeout=10) or None
+                
+                if video and video.status_code == 200:
+                    
+                    
+                    file_path = rf"{self.save_video_path}/{uuid4()}.mp4"
+                    
+                    with open(file_path, "wb") as file:
+                        file.write(video.content)
+                                        
+                    title = soup.find("h2")
+                    caption = soup.find("p", attrs={"class": self.__p_class_caption})
+                    
+                    media = MediaDownloaded(
+                        MEDIA=file_path,
+                        TITLE=title.text,
+                        CAPTION=caption.text,
+                        RESULT=True
+                    )
+                    
+                else:
+                    
+                    media = MediaDownloaded(RESULT=False)
+            else:
+                
+                media = MediaDownloaded(RESULT=False)
+                
                     
         except Exception as e:
             print(f"Error fetching images from {self.url}: {e}")
             media = MediaDownloaded(RESULT=False)
             
         return media
-
-
-# a = TikTok('https://www.tiktok.com/player/v1/6718335390845095173').download_post()
-
-
-# from selenium.webdriver.common.by import By
-# from selenium import webdriver
-# from selenium.webdriver.chrome.service import Service
-# from selenium.webdriver.chrome.options import Options
-# from webdriver_manager.chrome import ChromeDriverManager
-
-# # تنظیمات Chrome برای حالت Headless
-# chrome_options = Options()
-# chrome_options.add_argument("--headless")  # حالت بدون رابط کاربری
-# chrome_options.add_argument("--no-sandbox")  # برای امنیت بیشتر
-# chrome_options.add_argument("--disable-dev-shm-usage")  # جلوگیری از مشکلات حافظه
-# chrome_options.add_argument("--disable-gpu")  # غیرفعال کردن GPU
-
-# # ایجاد سرویس Chrome
-# service = Service(ChromeDriverManager().install())
-
-# # ایجاد وب‌درایور
-# driver = webdriver.Chrome(service=service, options=chrome_options)
-
-# # بارگذاری صفحه
-# driver.get("https://www.tiktok.com/@cyrusthevirustv/video/6915747896285613318")
-
-# # انجام عملیات مورد نظر (مثلاً استخراج عنوان صفحه)
-# print(driver.find_element(By.TAG_NAME, "video").get_attribute("src"))
-
-# # بستن درایور
-# driver.quit()
-
-
-
-
-   

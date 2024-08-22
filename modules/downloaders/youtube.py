@@ -31,7 +31,7 @@ class Youtube(BaseDownloader):
         
         try:
             music = self.youtube_client.streams.get_audio_only(subtype='mp3').download(self.save_music_path)
-            media = MediaDownloaded(PATH=music, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
+            media = MediaDownloaded(MEDIA=music, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
         
         except VideoUnavailable:
             media = MediaDownloaded(RESULT=None)
@@ -58,7 +58,7 @@ class Youtube(BaseDownloader):
         
         try:
             video = self.youtube_client.streams.get_by_resolution(resolution).download(self.save_video_path)
-            media = MediaDownloaded(PATH=video, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
+            media = MediaDownloaded(MEDIA=video, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
         except VideoUnavailable:
             media = MediaDownloaded(RESULT=None)
         

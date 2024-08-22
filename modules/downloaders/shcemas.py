@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class MediaDownloaded(BaseModel):
-    PATH: str | None = None
+    MEDIA: str | bytes |None = None
     TITLE: str | None = None
     CAPTION: str | None = None
     RESULT: bool | None = None

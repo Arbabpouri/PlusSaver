@@ -12,7 +12,7 @@ import logging
 import shutil
 import os
 
-from ..downloaders import Youtube, SoundCloud, Instagram, MediaDownloaded, Pinterest
+from ..downloaders import Youtube, SoundCloud, Instagram, MediaDownloaded, Pinterest, TikTok
 from config import Strings, BotConfig
 from .buttons import InlineButtonsData, InlineButtons, TextButtons, TextButtonsString, UrlButtons
 from ..database import User, Channel, Session, engine, Configs, Media
@@ -31,26 +31,26 @@ async def send_media(event, media: MediaDownloaded) -> None:
     if media.RESULT is True:
                 
         message = await client.send_message(event.chat_id, Strings.UPLOADING)
-        await client.send_file(event.chat_id, file=media.PATH, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+        await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
         
         await message.delete()
         
         try:
             
-            media_saved = await client.send_file(PeerChannel(BotConfig.MEDIAS_CHANNEL_ID), file=media.PATH, caption=Strings.media_geted(media.TITLE, media.CAPTION))
+            media_saved = await client.send_file(PeerChannel(BotConfig.MEDIAS_CHANNEL_ID), file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION))
             
             with Session(engine) as session:
-                media = Media(media_downloaded_url=str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
-                session.add(media)
+                media_save = Media(media_downloaded_url=str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
+                session.add(media_save)
                 session.commit()
         
         except Exception as e:
             pass
         
         try:
-            os.remove(media.PATH)
-        except Exception:
-            pass
+            os.remove(media.MEDIA)
+        except Exception as e:
+            print(e)
             
     elif media.RESULT is False:
         await event.reply(Strings.MEDIA_GET_ERROR)
@@ -424,17 +424,16 @@ class NewMessageHandlers(HandlerBase):
         elif match.is_spotify:
             await event.reply(Strings.COMMING_SOON)
 
-        elif match.is_tiktok:
-            await event.reply(Strings.COMMING_SOON)
+        elif match.is_tiktok:            
+            message = await event.reply(Strings.PLEASE_WAIT)
             
-            # message = await event.reply(Strings.PLEASE_WAIT)
-            
-            # if not await check_and_send_media_from_db(event, url):
+            if not await check_and_send_media_from_db(event, url):
                 
-            #     pinterest_client = Pinterest(event.message.message)
-            #     image = pinterest_client.download_image()
-            #     await message.delete()
-            #     await send_media(event, image)
+                tiktok_client = TikTok(event.message.message)
+                video = tiktok_client.download_post()
+                await send_media(event, video)
+            
+            await message.delete()
 
         elif match.is_pinterest:
             message = await event.reply(Strings.PLEASE_WAIT)

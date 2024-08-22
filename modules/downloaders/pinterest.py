@@ -28,7 +28,7 @@ class Pinterest(BaseDownloader):
             if image:
                 
                 media = MediaDownloaded(
-                    PATH=image,
+                    MEDIA=image,
                     TITLE=soup.select_one('title').text,
                     CAPTION=caption,
                     RESULT=True

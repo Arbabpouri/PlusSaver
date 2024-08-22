@@ -27,7 +27,7 @@ class SoundCloud(BaseDownloader):
                 # # with open(filename, 'wb+') as file:
                 # #     music.write_mp3_to(file)
                     
-                media = MediaDownloaded(PATH=music.get_stream_url(), TITLE=music.title, CAPTION=music.description, RESULT=True)
+                media = MediaDownloaded(MEDIA=music.get_stream_url(), TITLE=music.title, CAPTION=music.description, RESULT=True)
                 
             else:
                 media = MediaDownloaded(RESULT=None)
