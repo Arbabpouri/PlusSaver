@@ -408,7 +408,7 @@ class NewMessageHandlers(HandlerBase):
                     media = instagram_client.download_post()
                 
                 elif match.is_instagram_post:
-                    # Instagram(event.message.message).download_post()
+                    
                     await event.reply(Strings.COMMING_SOON)
                 
                 elif match.is_instagram_story:
