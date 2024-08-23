@@ -1,5 +1,4 @@
 from pytube import YouTube
-from pytube.exceptions import VideoUnavailable
 from typing import Optional
 from .shcemas import MediaDownloaded
 from ..enums import YoutubeVideResoloution
