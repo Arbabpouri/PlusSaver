@@ -17,8 +17,17 @@ class Instagram(BaseDownloader):
         
         
         # a = self.instagram_client.download_post(Post(self.instagram_client.context))
-        post = Post.from_shortcode(self.instagram_client.context, self.url.split("/")[-2])
-        print(post)
+        # post = Post.from_shortcode(self.instagram_client.context, self.url.split("/")[-2])
+        # print(post)
+            
+        media = MediaDownloaded(
+            MEDIA=self.url.replace("instagram.com", "ddinstagram.com"),
+            TITLE="t",
+            CAPTION="ca",
+            RESULT=True
+        )
+        
+        return media
     
     def download_profile(self) -> MediaDownloaded:
         """_summary_

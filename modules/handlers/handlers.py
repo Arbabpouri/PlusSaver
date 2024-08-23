@@ -396,15 +396,31 @@ class NewMessageHandlers(HandlerBase):
 
         if match.is_instagram:
             
-            if match.is_instagram_reels:
-                await event.reply(Strings.COMMING_SOON)
+            message = await event.reply(Strings.PLEASE_WAIT)
             
-            elif match.is_instagram_post:
-                # Instagram(event.message.message).download_post()
-                await event.reply(Strings.COMMING_SOON)
+            if not await check_and_send_media_from_db(event, url):
+                media = MediaDownloaded()
+                
+                instagram_client = Instagram(event.message.message)
+                
             
-            elif match.is_instagram_story:
-                await event.reply(Strings.COMMING_SOON)
+                if match.is_instagram_reels:
+                    media = instagram_client.download_post()
+                
+                elif match.is_instagram_post:
+                    # Instagram(event.message.message).download_post()
+                    await event.reply(Strings.COMMING_SOON)
+                
+                elif match.is_instagram_story:
+                    await event.reply(Strings.COMMING_SOON)
+                    
+                else:
+                    return
+                    
+                await send_media(event, media)
+                
+                    
+            await message.delete()
 
         elif match.is_youtube:
             await event.reply(Strings.COMMING_SOON)

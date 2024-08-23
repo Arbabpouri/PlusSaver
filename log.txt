@@ -1,0 +1,151 @@
+2024-08-23 16:46:00,518 - telethon.network.mtprotosender - INFO - Disconnecting from 149.154.167.92:443/TcpFull...
+2024-08-23 16:46:00,519 - telethon.network.mtprotosender - INFO - Disconnection from 149.154.167.92:443/TcpFull complete!
+2024-08-23 16:46:00,520 - telethon.network.mtprotosender - INFO - Not disconnecting (already have no connection)
+2024-08-23 16:46:14,657 - telethon.client.updates - ERROR - Unhandled exception on get_url
+Traceback (most recent call last):
+  File "/home/mohammad/Documents/code/projects/PlusSaver/venv/lib/python3.11/site-packages/telethon/client/updates.py", line 570, in _dispatch_update
+    await callback(event)
+  File "/home/mohammad/Documents/code/projects/PlusSaver/modules/handlers/handlers.py", line 420, in get_url
+    await send_media(event, media)
+  File "/home/mohammad/Documents/code/projects/PlusSaver/modules/handlers/handlers.py", line 34, in send_media
+    await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+  File "/home/mohammad/Documents/code/projects/PlusSaver/venv/lib/python3.11/site-packages/telethon/client/uploads.py", line 430, in send_file
+    return self._get_response_message(request, await self(request), entity)
+                                               ^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/venv/lib/python3.11/site-packages/telethon/client/users.py", line 30, in __call__
+    return await self._call(self._sender, request, ordered=ordered)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/venv/lib/python3.11/site-packages/telethon/client/users.py", line 87, in _call
+    result = await future
+             ^^^^^^^^^^^^
+telethon.errors.rpcerrorlist.WebpageCurlFailedError: Failure while fetching the webpage with cURL (caused by SendMediaRequest)
+2024-08-23 16:46:56,799 - telethon.client.updates - ERROR - Unhandled exception on get_url
+Traceback (most recent call last):
+  File "/home/mohammad/Documents/code/projects/PlusSaver/venv/lib/python3.11/site-packages/telethon/client/updates.py", line 570, in _dispatch_update
+    await callback(event)
+  File "/home/mohammad/Documents/code/projects/PlusSaver/modules/handlers/handlers.py", line 420, in get_url
+    await send_media(event, media)
+  File "/home/mohammad/Documents/code/projects/PlusSaver/modules/handlers/handlers.py", line 34, in send_media
+    await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+  File "/home/mohammad/Documents/code/projects/PlusSaver/venv/lib/python3.11/site-packages/telethon/client/uploads.py", line 430, in send_file
+    return self._get_response_message(request, await self(request), entity)
+                                               ^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/venv/lib/python3.11/site-packages/telethon/client/users.py", line 30, in __call__
+    return await self._call(self._sender, request, ordered=ordered)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mohammad/Documents/code/projects/PlusSaver/venv/lib/python3.11/site-packages/telethon/client/users.py", line 87, in _call
+    result = await future
+             ^^^^^^^^^^^^
+telethon.errors.rpcerrorlist.MediaEmptyError: The provided media object is invalid or the current account may not be able to send it (such as games as users) (caused by SendMediaRequest)
+2024-08-23 16:52:06,232 - telethon.network.connection.connection - WARNING - Server closed the connection: 0 bytes read on a total of 8 expected bytes
+2024-08-23 16:52:06,233 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: 0 bytes read on a total of 8 expected bytes
+2024-08-23 16:52:06,233 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 16:52:06,234 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 16:52:06,236 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 16:53:06,276 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 16:53:06,277 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 16:53:06,279 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:01:06,221 - telethon.client.updates - INFO - Got difference for account updates
+2024-08-23 17:06:49,848 - telethon.network.connection.connection - WARNING - Server closed the connection: 0 bytes read on a total of 8 expected bytes
+2024-08-23 17:06:49,848 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: 0 bytes read on a total of 8 expected bytes
+2024-08-23 17:06:49,848 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:06:49,848 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:06:49,849 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:07:01,147 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:07:01,147 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:07:01,147 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:07:01,148 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:07:01,148 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:07:01,150 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:08:07,353 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:08:07,353 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:08:07,878 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:08:11,003 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:08:11,003 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:08:11,003 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:08:11,004 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:08:11,004 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:08:14,996 - telethon.network.mtprotosender - WARNING - Attempt 1 at connecting failed: OSError: [Errno 113] Connect call failed ('149.154.167.92', 443)
+2024-08-23 17:08:17,127 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:08:20,270 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:08:20,270 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:08:20,271 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:08:20,271 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:08:20,271 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:08:30,279 - telethon.network.mtprotosender - WARNING - Attempt 1 at connecting failed: TimeoutError: 
+2024-08-23 17:08:31,372 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:08:34,668 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:08:34,668 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:08:34,668 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:08:34,668 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:08:34,669 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:08:39,312 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:08:42,453 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:08:42,453 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:08:42,453 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:08:42,453 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:08:42,454 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:08:43,374 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:08:46,518 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:08:46,518 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:08:46,519 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:08:46,519 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:08:46,519 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:08:47,952 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:08:51,117 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:08:51,118 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:08:51,118 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:08:51,118 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:08:51,119 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:08:52,473 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:08:55,607 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:08:55,608 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:08:55,608 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:08:55,608 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:08:55,609 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:08:56,287 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:08:59,600 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:08:59,601 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:08:59,601 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:08:59,601 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:08:59,601 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:08:59,741 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:09:02,988 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:09:02,988 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:09:02,989 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:09:02,989 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:09:02,990 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:09:03,157 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:09:06,338 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:09:06,338 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:09:06,338 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:09:06,338 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:09:06,339 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:09:06,408 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:09:07,392 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:09:07,393 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:09:07,736 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:09:10,995 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:09:10,995 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:09:10,995 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:09:10,996 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:09:10,996 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:09:11,187 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:10:07,416 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:10:07,417 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:10:07,504 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:10:10,840 - telethon.network.connection.connection - WARNING - Server closed the connection: [Errno 104] Connection reset by peer
+2024-08-23 17:10:10,840 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: [Errno 104] Connection reset by peer
+2024-08-23 17:10:10,841 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:10:10,841 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:10:10,842 - telethon.network.connection.connection - INFO - <class 'ConnectionResetError'> during disconnect: [Errno 104] Connection reset by peer
+2024-08-23 17:10:20,851 - telethon.network.mtprotosender - WARNING - Attempt 1 at connecting failed: TimeoutError: 
+2024-08-23 17:10:21,854 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:10:57,077 - telethon.network.connection.connection - WARNING - Server closed the connection: 0 bytes read on a total of 8 expected bytes
+2024-08-23 17:10:57,078 - telethon.network.mtprotosender - INFO - Connection closed while receiving data: 0 bytes read on a total of 8 expected bytes
+2024-08-23 17:10:57,078 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:10:57,078 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:10:57,080 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
+2024-08-23 17:12:07,518 - telethon.network.mtprotosender - INFO - Closing current connection to begin reconnect...
+2024-08-23 17:12:07,519 - telethon.network.mtprotosender - INFO - Connecting to 149.154.167.92:443/TcpFull...
+2024-08-23 17:12:07,520 - telethon.network.mtprotosender - INFO - Connection to 149.154.167.92:443/TcpFull complete!
