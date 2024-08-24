@@ -1,7 +1,7 @@
 ## English | انگلیسی
 # 🌟 Plus Saver - Telegram Bot
 
-<!-- ![Admin Panel]() -->
+![Admin Panel](./admin_panel.png)
 
 Plus Saver is a unique Telegram bot developed using the Python programming language and the Telethon library. This bot allows users to easily download various content from popular platforms and also gives administrators complete control over users and channels.
 
@@ -80,7 +80,7 @@ Experience an unparalleled way to download content and manage users on Telegram 
 
 # 🌟 Plus Saver - ربات تلگرام
 
-<!-- ![پنل ادمین]() -->
+![پنل ادمین](./admin_panel.png)
 
 Plus Saver یک ربات تلگرام منحصر به فرد است که با استفاده از زبان برنامه‌نویسی Python و کتابخانه Telethon توسعه یافته است. این ربات به کاربران این امکان را می‌دهد که به راحتی محتوای مختلف را از پلتفرم‌های محبوب دانلود کنند و همچنین به مدیران اجازه می‌دهد تا کنترل کاملی بر روی کاربران و کانال‌ها داشته باشند.
 
