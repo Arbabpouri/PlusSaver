@@ -48,7 +48,8 @@ async def send_media(event, media: MediaDownloaded) -> None:
             pass
         
         try:
-            os.remove(media.MEDIA)
+            if os.path.exists(media.MEDIA):
+                os.remove(media.MEDIA)
         except Exception as e:
             print(e)
             
