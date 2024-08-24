@@ -2,20 +2,20 @@
 
 class BotConfig:
     SESSION_NAME = "PlusSaverSession"
-    API_ID = 10603708
-    API_HASH = "f17d354888d912173f1599ca3133e04e"
-    BOT_TOKEN = "7471723600:AAHuEcXW7bBg_ryNbgxG5KcovE0-ptfZyr4"
+    API_ID = 123
+    API_HASH = ""
+    BOT_TOKEN = ""
     BOT_USERNAME = "PlusSaverBot"  # Without @, example Folabetbot
     DEFULT_ADMINS_USER_ID = {2056493966, }
     CREATOR_USER_ID = 2056493966
     SUPPORT_USERNAME = "Jarrare" # without @, example Jarrae
     REFERRAL_IMAGE_ADDRESS = r"./images/referral.png"
     DEFULT_SUPPORT_CHANNEL_URL = "t.me/MohammadMahdiArbabpouri" # url form, not username
-    DONATE = ""
+    DONATE = "doante url"
     DEFULT_ENTRY_PRIZE = 5000
     DEFULT_REFERRAL_BONUS = 1000
     TEXT_LONG = 3000
-    MEDIAS_CHANNEL_ID = 2232637889
+    MEDIAS_CHANNEL_ID = 123
     DEFULT_RULES_TEXT = (
         "### Download Bot Usage Rules 📥\n\n"
 
