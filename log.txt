@@ -1,3 +1,0 @@
-2024-08-24 13:09:22,275 - telethon.network.mtprotosender - INFO - Disconnecting from 149.154.167.91:443/TcpFull...
-2024-08-24 13:09:22,277 - telethon.network.mtprotosender - INFO - Disconnection from 149.154.167.91:443/TcpFull complete!
-2024-08-24 13:09:22,277 - telethon.network.mtprotosender - INFO - Not disconnecting (already have no connection)
