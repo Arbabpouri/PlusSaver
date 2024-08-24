@@ -1,3 +1,83 @@
+## English | انگلیسی
+# 🌟 Plus Saver - Telegram Bot
+
+<!-- ![Admin Panel]() -->
+
+Plus Saver is a unique Telegram bot developed using the Python programming language and the Telethon library. This bot allows users to easily download various content from popular platforms and also gives administrators complete control over users and channels.
+
+## 🚀 Features and Capabilities
+
+### Admin Section
+
+1. **Admin Management**:
+   - ➕ Add Admin
+   - ➖ Remove Admin 
+   - 👁 View Admins
+
+2. **User Section**:
+   - 🚫 Ban User
+   - 🔓 Unban User
+   - 📝 User Details
+
+3. **Channel Management**:
+   - ➕ Add Locked Channel
+   - ➖ Remove Channel
+   - 👁 View Channels
+
+4. **Sending Section**:
+   - 📤 Send to a user by numeric ID
+   - 📤 Send to all users
+
+5. **Settings**:
+   - ✍️ Change Terms Text
+   - ✍️ Change Help Text
+   - ✍️ Change Help Channel
+
+6. **Bot Statistics**:
+   - 📊 Number of Users
+   - 📊 Number of Locked Channels
+
+---
+
+### User Section
+
+1. 🎥 Download from YouTube
+2. 📸 Download from Instagram
+3. 🎵 Download from Spotify
+4. 📌 Download from Pinterest
+5. 🎶 Download from TikTok
+6. 🎧 Download from SoundCloud
+7. 📜 Terms and Conditions
+8. 📚 Help
+9. 📞 Contact Us (Send Support ID)
+10. 💖 Donate (Send Wallet Link, etc.)
+11. 👤 Creator (Send Bot Creator ID)
+
+---
+
+## 🛠 How to Set Up the Bot
+
+To set up Plus Saver, follow these steps:
+
+1. **Enter the config folder**:
+   - Navigate to the folder where the bot is located and then enter the config folder.
+
+2. **Edit the config.py file**:
+   - Open the config.py file with a text editor.
+   - Enter the required information such as bot token and other settings.
+
+3. **Run the man.py file**:
+   - After saving changes in config.py, return to the main bot folder and run the man.py file.
+
+Experience an unparalleled way to download content and manage users on Telegram with Plus Saver! 🌈
+
+
+## Persian | فارسی
+
+
+
+
+
 # 🌟 Plus Saver - ربات تلگرام
 
 <!-- ![پنل ادمین]() -->
