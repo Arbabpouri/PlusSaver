@@ -27,6 +27,7 @@ def check_db() -> None:
         create_table()
         defult_data()
 
+
 if __name__ == '__main__':
 
     try:
