@@ -1,4 +1,5 @@
 from sys import argv
+import os
 from telethon.events import NewMessage, CallbackQuery
 from modules import NewMessageHandlers, CallBackQueryHandlers, client, NewMessageGetInformationsHandlers
 from sqlalchemy import exc
@@ -21,28 +22,16 @@ def main():
     client.run_until_disconnected()
 
 
+def check_db() -> None:
+    if not os.path.exists(r"./database.db"):
+        create_table()
+        defult_data()
+
 if __name__ == '__main__':
 
-    if len(argv) > 1:
+    try:
+        check_db()
+        main()
+    except Exception as e:
+        print("error in run bot: ", e)
         
-        if argv[1] == "create-table":
-            create_table()
-
-        elif argv[1] == "defult-data":
-            defult_data()
-
-        else:
-            print(
-                "error in send arg , args must be : \n"
-                "\t 1 - \"run-bot\" : for running,\n"
-                "\t 2 - \"create-table\" : for create database table\n"
-                "\t 3 - \"defult-data\" : for add defult data to database\n"
-            )
-
-    else:
-        try:
-            main()
-        except exc.TimeoutError:
-            exit(1)
-        # run bot
-
