@@ -1,8 +1,6 @@
-from sys import argv
 import os
 from telethon.events import NewMessage, CallbackQuery
 from modules import NewMessageHandlers, CallBackQueryHandlers, client, NewMessageGetInformationsHandlers
-from sqlalchemy import exc
 from modules.handlers.rules import *
 from modules.database import defult_data, create_table
 
@@ -26,13 +24,26 @@ def check_db() -> None:
     if not os.path.exists(r"./database.db"):
         create_table()
         defult_data()
+        
+def check_directory() -> None:
+    if not os.path.exists(r"./download"):
+        os.mkdir(r"./download")
 
+    if not os.path.exists(r"./download/video"):
+        os.mkdir(r"./download/video")
+    
+    if not os.path.exists(r"./download/music"):
+        os.mkdir(r"./download/music")
+    
+    if os.path.exists(r"./download/image"):
+        os.mkdir(r"./download/image")
 
 if __name__ == '__main__':
 
     try:
-        check_db()
-        main()
+        check_directory()  # check directorys, if not exist, make a new one
+        check_db()  # check db, if not exist, make a new one and add default data
+        main()  # run bot
     except Exception as e:
         print("error in run bot: ", e)
         
