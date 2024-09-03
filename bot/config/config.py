@@ -1,5 +1,5 @@
 # coded with Love by MohammadMahdi Arbabpouri
-
+    
 
 class BotConfig:
     SESSION_NAME = "PlusSaverSession"
@@ -10,11 +10,8 @@ class BotConfig:
     DEFULT_ADMINS_USER_ID = {2056493966, }
     CREATOR_USER_ID = 2056493966
     SUPPORT_USERNAME = "Jarrare" # without @, example Jarrae
-    REFERRAL_IMAGE_ADDRESS = r"./images/referral.png"
     DEFULT_SUPPORT_CHANNEL_URL = "t.me/MohammadMahdiArbabpouri" # url form, not username
     DONATE = "doante url"
-    DEFULT_ENTRY_PRIZE = 5000
-    DEFULT_REFERRAL_BONUS = 1000
     TEXT_LONG = 3000
     MEDIAS_CHANNEL_ID = 123
     DEFULT_RULES_TEXT = (

@@ -35,7 +35,7 @@ def check_directory() -> None:
     if not os.path.exists(r"./download/music"):
         os.mkdir(r"./download/music")
     
-    if os.path.exists(r"./download/image"):
+    if not os.path.exists(r"./download/image"):
         os.mkdir(r"./download/image")
 
 if __name__ == '__main__':
