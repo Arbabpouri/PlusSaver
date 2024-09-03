@@ -1,4 +1,5 @@
 from pytube import YouTube
+from pytube.exceptions import VideoUnavailable
 from typing import Optional
 from .shcemas import MediaDownloaded
 from ..enums import YoutubeVideResoloution
@@ -9,7 +10,6 @@ class Youtube(BaseDownloader):
     def __init__(self, url: str) -> None:
         super().__init__(url)
         self.youtube_client = YouTube(self.url)
-        self.__api_url = ""
 
     def get_resolutions(self) -> list:
         """get_resolutions methdo for get video resolutions
@@ -19,11 +19,9 @@ class Youtube(BaseDownloader):
         Returns:
             list: a list of Stream object
         """
-        # resolutions = self.youtube_client.streams.all()
-        # return resolutions
+        resolutions = self.youtube_client.streams.all()
+        return resolutions
         
-        pass
-
     def download_music(self) -> MediaDownloaded:
         """_summary_
 
@@ -31,21 +29,19 @@ class Youtube(BaseDownloader):
             MediaDownloaded: _description_
         """
         
-        # try:
-        #     music = self.youtube_client.streams.get_audio_only(subtype='mp3').download(self.save_music_path)
-        #     media = MediaDownloaded(MEDIA=music, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
+        try:
+            music = self.youtube_client.streams.get_audio_only(subtype='mp3').download(self.save_music_path)
+            media = MediaDownloaded(MEDIA=music, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
         
-        # except VideoUnavailable:
-        #     media = MediaDownloaded(RESULT=None)
+        except VideoUnavailable:
+            media = MediaDownloaded(RESULT=None)
         
-        # except Exception as e:
-        #     print("Error in download_video method: ", e)
-        #     media = MediaDownloaded(RESULT=False)
+        except Exception as e:
+            print("Error in download_video method: ", e)
+            media = MediaDownloaded(RESULT=False)
         
-        # return media
+        return media
         
-        pass
-
     def download_video(self, resolution: Optional[str] = YoutubeVideResoloution.R_144P.value) -> MediaDownloaded:
         """download_video method for download vide from youtube with custom resolution
         
@@ -60,17 +56,15 @@ class Youtube(BaseDownloader):
             MediaDownloaded: ...
         """
         
-        # try:
-        #     video = self.youtube_client.streams.get_by_resolution(resolution).download(self.save_video_path)
-        #     media = MediaDownloaded(MEDIA=video, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
-        # except VideoUnavailable:
-        #     media = MediaDownloaded(RESULT=None)
+        try:
+            video = self.youtube_client.streams.get_by_resolution(resolution).download(self.save_video_path)
+            media = MediaDownloaded(MEDIA=video, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
+        except VideoUnavailable:
+            media = MediaDownloaded(RESULT=None)
         
-        # except Exception as e:
-        #     print("Error in download_video method: ", e)
-        #     media = MediaDownloaded(RESULT=False)
+        except Exception as e:
+            print("Error in download_video method: ", e)
+            media = MediaDownloaded(RESULT=False)
         
-        # return media
-        
-        pass
+        return media
         
