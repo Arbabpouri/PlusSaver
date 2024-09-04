@@ -30,7 +30,7 @@ class TikTok(BaseDownloader):
             "tt": "MnZQcWQ2",
         }
     
-    def download_post(self) -> MediaDownloaded:
+    async def download_post(self) -> MediaDownloaded:
         
         try:
             

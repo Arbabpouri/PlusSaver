@@ -11,7 +11,7 @@ class Pinterest(BaseDownloader):
         self.__image_class = "hCL kVc L4E MIw"
         self.__caption_class = "tBJ dyH iFc sAJ X8m zDA IZT swG"
         
-    def download_image(self) -> MediaDownloaded:
+    async def download_image(self) -> MediaDownloaded:
         
         try:
             

@@ -10,7 +10,7 @@ class SoundCloud(BaseDownloader):
         self.soundcloud_client = SoundcloudAPI()
         
         
-    def download_music(self) -> MediaDownloaded:
+    async def download_music(self) -> MediaDownloaded:
         """download_misic method for download soundcloud music
 
         Returns:

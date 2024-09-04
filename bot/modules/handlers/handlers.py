@@ -402,11 +402,15 @@ class NewMessageHandlers(HandlerBase):
             if not await check_and_send_media_from_db(event, url):
                 media = MediaDownloaded()
                 
+                
+                await event.reply(Strings.COMMING_SOON)
+                return
+                
                 instagram_client = Instagram(event.message.message)
                 
             
                 if match.is_instagram_reels:
-                    media = instagram_client.download_post()
+                    media = await instagram_client.download_post()
                 
                 elif match.is_instagram_post:
                     
@@ -429,7 +433,7 @@ class NewMessageHandlers(HandlerBase):
             if not await check_and_send_media_from_db(event, url):
                 
                 youtube_client = Youtube(event.message.message)
-                media = youtube_client.download_video()
+                media = await youtube_client.download_video()
                 await send_media(event, media)
             
             await message.delete()
@@ -441,13 +445,12 @@ class NewMessageHandlers(HandlerBase):
             if not await check_and_send_media_from_db(event, url):
                 
                 soundcloud_client = SoundCloud(event.message.message)
-                music = soundcloud_client.download_music()
+                music = await soundcloud_client.download_music()
                 await send_media(event, music)
             
             await message.delete()
 
         elif match.is_spotify:
-            print("spotify")
             await event.reply(Strings.COMMING_SOON)
 
         elif match.is_tiktok:            
@@ -456,7 +459,7 @@ class NewMessageHandlers(HandlerBase):
             if not await check_and_send_media_from_db(event, url):
                 
                 tiktok_client = TikTok(event.message.message)
-                video = tiktok_client.download_post()
+                video = await tiktok_client.download_post()
                 await send_media(event, video)
             
             await message.delete()
@@ -467,7 +470,7 @@ class NewMessageHandlers(HandlerBase):
             if not await check_and_send_media_from_db(event, url):
                 
                 pinterest_client = Pinterest(event.message.message)
-                image = pinterest_client.download_image()
+                image = await pinterest_client.download_image()
                 await send_media(event, image)
             
             await message.delete()

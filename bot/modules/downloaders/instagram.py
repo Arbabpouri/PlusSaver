@@ -8,7 +8,7 @@ class Instagram(BaseDownloader):
         super().__init__(url)
         self.instagram_client = Instaloader()
         
-    def download_post(self) -> MediaDownloaded:
+    async def download_post(self) -> MediaDownloaded:
         """_summary_
 
         Returns:
@@ -29,7 +29,7 @@ class Instagram(BaseDownloader):
         
         return media
     
-    def download_profile(self) -> MediaDownloaded:
+    async def download_profile(self) -> MediaDownloaded:
         """_summary_
 
         Returns:
@@ -38,7 +38,7 @@ class Instagram(BaseDownloader):
         
         pass
     
-    def download_story(self) -> MediaDownloaded:
+    async def download_story(self) -> MediaDownloaded:
         """_summary_
 
         Returns:

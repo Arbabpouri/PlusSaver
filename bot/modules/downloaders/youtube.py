@@ -15,7 +15,7 @@ class Youtube(BaseDownloader):
             'quiet': True,
         }
 
-    def get_resolutions(self) -> list:
+    async def get_resolutions(self) -> list:
         """get_resolutions methdo for get video resolutions
         
         >>> Youtube('url').get_resolutions()
@@ -25,7 +25,7 @@ class Youtube(BaseDownloader):
         """
         pass
         
-    def download_music(self) -> MediaDownloaded:
+    async def download_music(self) -> MediaDownloaded:
         """_summary_
 
         Returns:
@@ -34,7 +34,7 @@ class Youtube(BaseDownloader):
         
         pass
                 
-    def download_video(self, resolution: Optional[str] = YoutubeVideResoloution.R_144P.value) -> MediaDownloaded:
+    async def download_video(self, resolution: Optional[str] = YoutubeVideResoloution.R_144P.value) -> MediaDownloaded:
         """download_video method for download vide from youtube with custom resolution
         
         >>> Youtube('url').download_video(resolution=YoutubeVideResoloution.R_144P.value)
