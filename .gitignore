@@ -164,7 +164,7 @@ cython_debug/
 database.db
 
 # Ignore cookies file
-coockies.txt
+cookies.txt
 
 # Ignore configuration file
 config.py
