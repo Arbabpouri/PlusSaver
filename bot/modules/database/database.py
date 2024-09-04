@@ -11,12 +11,8 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = "users"
     user_id: Mapped[int] = mapped_column(unique=True)
-    balance: Mapped[int] = mapped_column(default=BotConfig.DEFULT_ENTRY_PRIZE)
     is_admin: Mapped[bool] = mapped_column(default=False)
     is_ban: Mapped[bool] = mapped_column(default=False)
-    referral_active: Mapped[bool] = mapped_column(nullable=True, default=None)
-    invited_by: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=True, default=None)
-    referrals: Mapped[List["User"]] = relationship('User', remote_side='User.id', backref=backref('user_referrals'))
 
 
 class Channel(Base):
@@ -31,8 +27,7 @@ class Configs(Base):
     support_channel_url: Mapped[str] = mapped_column(String(300), default=BotConfig.DEFULT_SUPPORT_CHANNEL_URL)
     trust_text: Mapped[str] = mapped_column(Text(BotConfig.TEXT_LONG), default=BotConfig.DEFULT_HELP_TEXT)
     rules_text: Mapped[str] = mapped_column(Text(BotConfig.TEXT_LONG), default=BotConfig.DEFULT_RULES_TEXT)
-    entry_prize: Mapped[int] = mapped_column(Integer, default=BotConfig.DEFULT_ENTRY_PRIZE)
-    referral_bonus: Mapped[int] = mapped_column(Integer, default=BotConfig.DEFULT_REFERRAL_BONUS)
+
     
 
 class Media(Base):

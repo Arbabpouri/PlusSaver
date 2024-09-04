@@ -1,5 +1,4 @@
-from pytube import YouTube
-from pytube.exceptions import VideoUnavailable
+from yt_dlp import YoutubeDL
 from typing import Optional
 from .shcemas import MediaDownloaded
 from ..enums import YoutubeVideResoloution
@@ -7,9 +6,14 @@ from .base import BaseDownloader
 
 class Youtube(BaseDownloader):
     
-    def __init__(self, url: str) -> None:
+    def __init__(self, url: str, video: Optional[bool] = True) -> None:
         super().__init__(url)
-        self.youtube_client = YouTube(self.url)
+        self.__coockies_path = r"./config/coockies.txt"
+        self.__ytdlp_opts = {
+            'cookiefile': './config/coockies.txt',
+            'format': 'best' if video else 'mp3',
+            'quiet': True,  # برای جلوگیری از چاپ اطلاعات اضافی
+        }
 
     def get_resolutions(self) -> list:
         """get_resolutions methdo for get video resolutions
@@ -19,8 +23,7 @@ class Youtube(BaseDownloader):
         Returns:
             list: a list of Stream object
         """
-        resolutions = self.youtube_client.streams.all()
-        return resolutions
+        pass
         
     def download_music(self) -> MediaDownloaded:
         """_summary_
@@ -29,19 +32,8 @@ class Youtube(BaseDownloader):
             MediaDownloaded: _description_
         """
         
-        try:
-            music = self.youtube_client.streams.get_audio_only(subtype='mp3').download(self.save_music_path)
-            media = MediaDownloaded(MEDIA=music, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
-        
-        except VideoUnavailable:
-            media = MediaDownloaded(RESULT=None)
-        
-        except Exception as e:
-            print("Error in download_video method: ", e)
-            media = MediaDownloaded(RESULT=False)
-        
-        return media
-        
+        pass
+                
     def download_video(self, resolution: Optional[str] = YoutubeVideResoloution.R_144P.value) -> MediaDownloaded:
         """download_video method for download vide from youtube with custom resolution
         
@@ -55,16 +47,31 @@ class Youtube(BaseDownloader):
         Returns:
             MediaDownloaded: ...
         """
-        
-        try:
-            video = self.youtube_client.streams.get_by_resolution(resolution).download(self.save_video_path)
-            media = MediaDownloaded(MEDIA=video, TITLE=self.youtube_client.title, CAPTION=self.youtube_client.description, RESULT=True)
-        except VideoUnavailable:
-            media = MediaDownloaded(RESULT=None)
+        media = MediaDownloaded()
+        try :
+            with YoutubeDL(self.__ytdlp_opts) as ydl:
+                
+                info_dict = ydl.extract_info(self.url, download=False)
+                
+                video_url = info_dict.get('url', None)
+                title = info_dict.get('title', None)
+                description = info_dict.get('description', None)
+                
+                if video_url:
+                    media = MediaDownloaded(
+                        MEDIA=video_url,
+                        TITLE=title,
+                        CAPTION=description,
+                        RESULT=True
+                    )
+                    
+                else:
+                    media = MediaDownloaded(RESULT=None)
         
         except Exception as e:
-            print("Error in download_video method: ", e)
+            print(e)
             media = MediaDownloaded(RESULT=False)
-        
+            
         return media
+
         

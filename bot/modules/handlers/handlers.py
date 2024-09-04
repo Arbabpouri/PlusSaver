@@ -424,7 +424,15 @@ class NewMessageHandlers(HandlerBase):
             await message.delete()
 
         elif match.is_youtube:
-            await event.reply(Strings.COMMING_SOON)
+            message = await event.reply(Strings.PLEASE_WAIT)
+            
+            if not await check_and_send_media_from_db(event, url):
+                
+                youtube_client = Youtube(event.message.message)
+                media = youtube_client.download_video()
+                await send_media(event, media)
+            
+            await message.delete()
         
         elif match.is_soundcloud:
             
@@ -439,6 +447,7 @@ class NewMessageHandlers(HandlerBase):
             await message.delete()
 
         elif match.is_spotify:
+            print("spotify")
             await event.reply(Strings.COMMING_SOON)
 
         elif match.is_tiktok:            
