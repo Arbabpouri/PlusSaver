@@ -8,11 +8,11 @@ class Youtube(BaseDownloader):
     
     def __init__(self, url: str, video: Optional[bool] = True) -> None:
         super().__init__(url)
-        self.__coockies_path = r"./config/coockies.txt"
+        self.__coockies_path = r"./config/cookies.txt"
         self.__ytdlp_opts = {
-            'cookiefile': './config/coockies.txt',
+            'cookiefile': './config/cookies.txt',
             'format': 'best' if video else 'mp3',
-            'quiet': True,  # برای جلوگیری از چاپ اطلاعات اضافی
+            'quiet': True,
         }
 
     def get_resolutions(self) -> list:
