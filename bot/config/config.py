@@ -3,10 +3,9 @@
 
 class BotConfig:
     SESSION_NAME = "PlusSaverSession"
-    API_ID = 10603708
-    API_HASH = "f17d354888d912173f1599ca3133e04e"
-    # BOT_TOKEN = "7471723600:AAHuEcXW7bBg_ryNbgxG5KcovE0-ptfZyr4"
-    BOT_TOKEN = "6657555351:AAHPSb3X6YVjOA7dc3v4-8CRkxpg3x_dAKc"
+    API_ID = 123
+    API_HASH = ""
+    BOT_TOKEN = ""
     BOT_USERNAME = "PlusSaverBot"  # Without @, example Folabetbot
     DEFULT_ADMINS_USER_ID = {2056493966, }
     CREATOR_USER_ID = 2056493966
