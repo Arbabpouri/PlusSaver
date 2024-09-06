@@ -393,7 +393,6 @@ class NewMessageHandlers(HandlerBase):
         url = event.message.message
 
         match = Regexs(url=url)
-        
 
         if match.is_instagram:
             
@@ -638,27 +637,6 @@ class NewMessageGetInformationsHandlers(HandlerBase):
                 case Step.SHOW_USER_INFO:
                     await event.reply(Strings.NEW_UPDATE, buttons=InlineButtons.USER_SETTING)
                     del_step(event.sender_id)
-
-                case Step.CHANGE_ENTERY_PRIZE | Step.CHANGE_REFERRAL_BONUS:
-                    value = str(event.message.message)
-
-                    if value.isnumeric():
-                        
-                        with Session(engine) as session:
-                            configs = session.query(Configs).first()
-                        
-                            if info.PART == Step.CHANGE_ENTERY_PRIZE:
-                                configs.entry_prize = int(value)
-                            else:
-                                configs.referral_bonus = int(value)
-                            
-                            session.commit()
-                            del_step(event.sender_id)
-                            
-                            await event.reply(Strings.UPDATED, buttons=InlineButtons.CONFIGS_PANEL)
-
-                    else:
-                        await event.reply(Strings.ENTER_NUMBER)
 
                 case Step.CHANGE_HELP_TEXT | Step.CHANGE_RULES_TEXT:
                     
