@@ -60,9 +60,7 @@ class InlineButtonsData:
     SHOW_USER_INFO = "SHOW_USER_INFO"
     CHANGE_RULES_TEXT = "CHANGE_RULES_TEXT"
     CHANGE_HELP_TEXT = "CHANGE_HELP_TEXT"
-    CHANGE_ENTERY_PRIZE = "CHANGE_ENTERY_PRIZE"
     CHANGE_TRUST_CHANNEL = "CHANGE_TRUST_CHANNEL"
-    CHANGE_REFERRAL_BONUS = "CHANGE_REFERRAL_BONUS"
     JOINED_IN_CHANNEL = "JOINED_CHANNEL"
     BACK_TO_ADMIN = "BACK_TO_ADMIN"
     DONWLOAD_RESOLUTION = "DONWLOAD_RESOLUTION_"
@@ -158,12 +156,6 @@ class InlineButtons:
         ),
         (
             Button.inline(text=InlineButtonString.CHANGE_HELP_TEXT, data=InlineButtonsData.CHANGE_HELP_TEXT),
-        ),
-        (
-            Button.inline(text=InlineButtonString.CHANGE_ENTERY_PRIZE, data=InlineButtonsData.CHANGE_ENTERY_PRIZE),
-        ),
-        (
-            Button.inline(text=InlineButtonString.CHANGE_REFERRAL_BONUS, data=InlineButtonsData.CHANGE_REFERRAL_BONUS),
         ),
         (
             Button.inline(text=InlineButtonString.CHANGE_TRUST_CHANNEL, data=InlineButtonsData.CHANGE_TRUST_CHANNEL),
