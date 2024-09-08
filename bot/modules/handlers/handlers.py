@@ -9,7 +9,6 @@ from re import match
 from typing import Iterable, Any
 from asyncio import sleep
 import logging
-import shutil
 import os
 
 from ..downloaders import Youtube, SoundCloud, Instagram, MediaDownloaded, Pinterest, TikTok
@@ -22,20 +21,21 @@ from ..regexs import Regexs
 from ..enums import YoutubeVideResoloution
 
 
-logging.basicConfig(filename="log.txt", filemode="a",format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
+# logging.basicConfig(filename="log.txt", filemode="a",format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+# logger = logging.getLogger(__name__)
 
 
 async def send_media(event, media: MediaDownloaded) -> None:
     
     if media.RESULT is True:
                 
-        message = await client.send_message(event.chat_id, Strings.UPLOADING)
-        await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
         
-        await message.delete()
         
         try:
+            message = await client.send_message(event.chat_id, Strings.UPLOADING)
+            await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+            
+            await message.delete()
             
             media_saved = await client.send_file(PeerChannel(BotConfig.MEDIAS_CHANNEL_ID), file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION))
             
@@ -45,7 +45,7 @@ async def send_media(event, media: MediaDownloaded) -> None:
                 session.commit()
         
         except Exception as e:
-            pass
+            print("Error in send_media, error :", e)
         
         try:
             if os.path.exists(media.MEDIA):
@@ -141,7 +141,7 @@ async def add_user(user_id: int) -> bool:
         if not user:
 
             configs = session.query(Configs).first()
-            user = User(user_id=int(user_id), balance=configs.entry_prize)
+            user = User(user_id=int(user_id))
 
             session.add(user)
             session.commit()
@@ -390,7 +390,7 @@ class NewMessageHandlers(HandlerBase):
     @staticmethod
     async def get_url(event: Message) -> None:
         
-        url = event.message.message
+        url = str(event.message.message)
 
         match = Regexs(url=url)
 
@@ -427,16 +427,17 @@ class NewMessageHandlers(HandlerBase):
             await message.delete()
 
         elif match.is_youtube:
+            
             message = await event.reply(Strings.PLEASE_WAIT)
             
             if not await check_and_send_media_from_db(event, url):
                 
                 youtube_client = Youtube(event.message.message)
-                media = await youtube_client.download_video()
-                await send_media(event, media)
+                video = await youtube_client.download_video()
+                await send_media(event, video)
             
             await message.delete()
-        
+                    
         elif match.is_soundcloud:
             
             message = await event.reply(Strings.PLEASE_WAIT)
