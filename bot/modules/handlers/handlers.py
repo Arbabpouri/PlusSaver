@@ -1,7 +1,7 @@
 from telethon.custom import Message
 from telethon.events import CallbackQuery
 from telethon.types import PeerChannel, PeerUser, Channel as ChannelInstance
-from telethon.errors.rpcerrorlist import FloodWaitError
+from telethon.errors.rpcerrorlist import FloodWaitError, MediaCaptionTooLongError
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantRequest
 from telethon.errors.rpcerrorlist import UserNotParticipantError, ChatAdminRequiredError, ChannelPrivateError
 from abc import ABC, abstractmethod
@@ -18,11 +18,10 @@ from ..database import User, Channel, Session, engine, Configs, Media
 from .app import client
 from .step import Step, step_limit, Permission
 from ..regexs import Regexs
-from ..enums import YoutubeVideResoloution
 
 
-# logging.basicConfig(filename="log.txt", filemode="a",format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-# logger = logging.getLogger(__name__)
+logging.basicConfig(filename="log.txt", filemode="a",format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 async def send_media(event, media: MediaDownloaded) -> None:
@@ -30,10 +29,15 @@ async def send_media(event, media: MediaDownloaded) -> None:
     if media.RESULT is True:
                 
         
-        
         try:
-            message = await client.send_message(event.chat_id, Strings.UPLOADING)
-            await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+            
+            try:
+                message = await client.send_message(event.chat_id, Strings.UPLOADING)
+                await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+            
+            except MediaCaptionTooLongError:
+                media_sended = await client.send_file(event.chat_id, file=media.MEDIA, reply_to=event.id)
+                await client.send_message(event.chat_id, message=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=media_sended.id)
             
             await message.delete()
             
@@ -399,40 +403,20 @@ class NewMessageHandlers(HandlerBase):
             message = await event.reply(Strings.PLEASE_WAIT)
             
             if not await check_and_send_media_from_db(event, url):
-                media = MediaDownloaded()
                 
-                
-                await event.reply(Strings.COMMING_SOON)
-                return
-                
-                instagram_client = Instagram(event.message.message)
-                
+                instagram_client = Instagram(url)
+                video = await instagram_client.download_media()
+                await send_media(event, video)
             
-                if match.is_instagram_reels:
-                    media = await instagram_client.download_post()
-                
-                elif match.is_instagram_post:
-                    
-                    await event.reply(Strings.COMMING_SOON)
-                
-                elif match.is_instagram_story:
-                    await event.reply(Strings.COMMING_SOON)
-                    
-                else:
-                    return
-                    
-                await send_media(event, media)
-                
-                    
             await message.delete()
-
+                                
         elif match.is_youtube:
             
             message = await event.reply(Strings.PLEASE_WAIT)
             
             if not await check_and_send_media_from_db(event, url):
                 
-                youtube_client = Youtube(event.message.message)
+                youtube_client = Youtube(url)
                 video = await youtube_client.download_video()
                 await send_media(event, video)
             
@@ -444,7 +428,7 @@ class NewMessageHandlers(HandlerBase):
             
             if not await check_and_send_media_from_db(event, url):
                 
-                soundcloud_client = SoundCloud(event.message.message)
+                soundcloud_client = SoundCloud(url)
                 music = await soundcloud_client.download_music()
                 await send_media(event, music)
             
@@ -458,7 +442,7 @@ class NewMessageHandlers(HandlerBase):
             
             if not await check_and_send_media_from_db(event, url):
                 
-                tiktok_client = TikTok(event.message.message)
+                tiktok_client = TikTok(url)
                 video = await tiktok_client.download_post()
                 await send_media(event, video)
             
@@ -469,7 +453,7 @@ class NewMessageHandlers(HandlerBase):
             
             if not await check_and_send_media_from_db(event, url):
                 
-                pinterest_client = Pinterest(event.message.message)
+                pinterest_client = Pinterest(url)
                 image = await pinterest_client.download_image()
                 await send_media(event, image)
             
