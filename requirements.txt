@@ -11,7 +11,6 @@ charset-normalizer==3.3.2
 frozenlist==1.4.1
 greenlet==3.0.3
 idna==3.7
-instaloader==4.13
 multidict==6.0.5
 mutagen==1.47.0
 pyaes==1.6.1
@@ -19,7 +18,6 @@ pyasn1==0.6.0
 pycryptodomex==3.20.0
 pydantic==2.8.2
 pydantic_core==2.20.1
-pytube==15.0.0
 pytubefix==6.12.0
 requests==2.32.3
 rsa==4.9
@@ -31,4 +29,3 @@ typing_extensions==4.12.2
 urllib3==2.2.2
 websockets==12.0
 yarl==1.9.4
-yt-dlp==2024.8.6
