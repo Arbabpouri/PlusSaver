@@ -47,7 +47,7 @@ class Youtube(BaseDownloader):
         
         async with aiohttp.ClientSession() as session:
                 
-            async with session.post(url=self.__api_url, data=self.__data) as response:
+            async with session.post(url=self.__api_url, data=self.__data, headers=self.__headers) as response:
             
                 if response.status == 200:
                     
