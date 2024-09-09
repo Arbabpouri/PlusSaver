@@ -64,3 +64,14 @@ class Regexs:
             re.match(pattern=self.pinterest_android_regex, string=self.url)
         )
     
+    @property
+    def check_all(self) -> bool:
+        return bool(
+            self.is_youtube or
+            self.is_soundcloud or
+            self.is_spotify or
+            self.is_tiktok or
+            self.is_instagram or
+            self.is_pinterest
+        )
+        

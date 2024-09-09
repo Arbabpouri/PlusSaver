@@ -393,6 +393,13 @@ class NewMessageHandlers(HandlerBase):
     @staticmethod
     async def get_url(event: Message) -> None:
         
+        url = str(event.message.message)
+
+        match = Regexs(url=url)
+        
+        if not match.check_all:
+            return
+        
         try:
         
             if not await check_join(event.sender_id):
@@ -408,9 +415,7 @@ class NewMessageHandlers(HandlerBase):
             print(e)
 
         
-        url = str(event.message.message)
-
-        match = Regexs(url=url)
+        
 
         if match.is_instagram:
             
