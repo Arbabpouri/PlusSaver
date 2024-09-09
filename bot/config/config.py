@@ -6,7 +6,7 @@ class BotConfig:
     API_ID = 123
     API_HASH = ""
     BOT_TOKEN = ""
-    BOT_USERNAME = "PlusSaverBot"  # Without @, example Folabetbot
+    BOT_USERNAME = "PlusSaverBot"  # Without @, example PlusSaverBot
     DEFULT_ADMINS_USER_ID = {2056493966, }
     CREATOR_USER_ID = 2056493966
     SUPPORT_USERNAME = "Jarrare" # without @, example Jarrae
