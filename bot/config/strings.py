@@ -34,7 +34,7 @@ class Strings:
     SENDING = "📌 درحال ارسال . . ."
     CHANNEL_ALREADY_EXIST = "⚠ این کانال وجود دارد لطفا کانال دیگری را ارسال کنید"
     JOIN_TO_CHANNELS = "⚠ برای فعالیت در ربات باید عضو کانال های زیر بشوید"
-    CREATOR = f"👨‍💻 - https://t.me/{BotConfig.SUPPORT_USERNAME}"
+    CREATOR = f"👨‍💻 - https://t.me/{BotConfig.CREATOR_USERNAME}"
     DONATE = f"❤ come to my pv {TextButtonsString.CONTACT_US_COMMAND}"
     
     

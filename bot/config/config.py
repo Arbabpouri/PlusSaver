@@ -10,8 +10,8 @@ class BotConfig:
     DEFULT_ADMINS_USER_ID = {2056493966, }
     CREATOR_USER_ID = 2056493966
     SUPPORT_USERNAME = "Jarrare" # without @, example Jarrae
+    CREATOR_USERNAME = "Jarrare" # without @, example Jarrae
     DEFULT_SUPPORT_CHANNEL_URL = "t.me/MohammadMahdiArbabpouri" # url form, not username
-    DONATE = ""
     TEXT_LONG = 3000
     MEDIAS_CHANNEL_ID = 2232637889
     DEFULT_RULES_TEXT = (
