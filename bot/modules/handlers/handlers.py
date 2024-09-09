@@ -414,8 +414,6 @@ class NewMessageHandlers(HandlerBase):
         except Exception as e:
             print(e)
 
-        
-        
 
         if match.is_instagram:
             
