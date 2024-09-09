@@ -3,7 +3,7 @@ from telethon.events import CallbackQuery
 from telethon.types import PeerChannel, PeerUser, Channel as ChannelInstance
 from telethon.errors.rpcerrorlist import FloodWaitError, MediaCaptionTooLongError
 from telethon.tl.functions.channels import GetFullChannelRequest, GetParticipantRequest
-from telethon.errors.rpcerrorlist import UserNotParticipantError, ChatAdminRequiredError, ChannelPrivateError
+from telethon.errors.rpcerrorlist import UserNotParticipantError, ChatAdminRequiredError, ChannelPrivateError, UserIsBlockedError
 from abc import ABC, abstractmethod
 from re import match
 from typing import Iterable, Any
@@ -124,7 +124,7 @@ async def check_join(user_id: int) -> bool:
 
         for channel in not_admin:
             try:
-                await client.send_message(PeerUser(BotConfig.CREATOR_USER_ID), message=Strings.channel_deleted(channel))
+                await client.send_message((BotConfig.CREATOR_USER_ID), message=Strings.channel_deleted(channel))
             except Exception as e:
                 print(e)
         if not_joined:
@@ -144,7 +144,6 @@ async def add_user(user_id: int) -> bool:
 
         if not user:
 
-            configs = session.query(Configs).first()
             user = User(user_id=int(user_id))
 
             session.add(user)
@@ -393,6 +392,21 @@ class NewMessageHandlers(HandlerBase):
 
     @staticmethod
     async def get_url(event: Message) -> None:
+        
+        try:
+        
+            if not await check_join(event.sender_id):
+                await event.reply(Strings.CHECK_PV)
+                return
+
+        except UserIsBlockedError:
+            
+            await event.reply(Strings.PLEASE_START_BOT_AND_JOIN_CHANNELS)
+            return
+        
+        except Exception as e:
+            print(e)
+
         
         url = str(event.message.message)
 

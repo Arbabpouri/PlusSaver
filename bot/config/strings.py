@@ -46,6 +46,21 @@ class Strings:
     PLEASE_WAIT = "⏳ Please Wait . . ."
     COMMING_SOON = "⁉️ Comming Soon . . .♻️"
     SELECT = "👇 Select an item ..."
+    PLEASE_START_BOT_AND_JOIN_CHANNELS = (
+        "**✨ Hello dear friend! ✨**\n\n"
+
+        "To start using the bot, please follow these steps:\n\n"
+        
+        f"1. Visit the bot: [{BotConfig.BOT_USERNAME}](https://t.me/{BotConfig.BOT_USERNAME})\n"
+        "2. Start the bot.\n"
+        "3. Join the sponsor channels.\n\n"
+
+        "After completing these steps, you can resend your request.\n\n"
+
+        "🌟 Good luck! 🌟"
+    )
+    
+    CHECK_PV = "🔍 Please check pv"
     
 
     START_MENU = (
