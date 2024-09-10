@@ -1,4 +1,5 @@
 import aiohttp
+from uuid import uuid4
 from .shcemas import MediaDownloaded
 from .base import BaseDownloader
 
@@ -24,10 +25,17 @@ class Instagram(BaseDownloader):
                     response_data = await response.json()
                     download_url = response_data.get('downloadLink')
                     caption = response_data.get('videoTitle')
+                    del response
+                    del response_data
+                    async with session.get(download_url) as media:
+                        if media.status == 200:
+                            
+                            media_path = self.save_video_path + f"/{uuid4()}.mp4"
+                            with open(media_path, 'wb') as file:
+                                file.write(await media.read())
+                            
+                            return MediaDownloaded(MEDIA=media_path, CAPTION=caption, RESULT=True, TITLE='Instagram Video')
                     
-                    if download_url:
-                        return MediaDownloaded(MEDIA=download_url, CAPTION=caption, RESULT=True, TITLE='Instagram Video')
-                    
-                    return MediaDownloaded()
+                        return MediaDownloaded()
             
                 return MediaDownloaded(RESULT=False)
