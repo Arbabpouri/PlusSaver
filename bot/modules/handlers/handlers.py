@@ -294,16 +294,6 @@ class CallBackQueryHandlers(HandlerBase):
                 case InlineButtonsData.SHOW_USER_INFO:
                     await event.answer(Strings.NEW_UPDATE)
 
-                case InlineButtonsData.CHANGE_ENTERY_PRIZE:
-                    step = Permission(PART=Step.CHANGE_ENTERY_PRIZE)
-                    step_limit[int(event.sender_id)] = step
-                    await event.edit(Strings.ENTER_VALUE)
-
-                case InlineButtonsData.CHANGE_REFERRAL_BONUS:
-                    step = Permission(PART=Step.CHANGE_REFERRAL_BONUS)
-                    step_limit[int(event.sender_id)] = step
-                    await event.edit(Strings.ENTER_VALUE)
-
                 case InlineButtonsData.CHANGE_HELP_TEXT:
                     step = Permission(PART=Step.CHANGE_HELP_TEXT)
                     step_limit[int(event.sender_id)] = step

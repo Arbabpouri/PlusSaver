@@ -87,9 +87,7 @@ class InlineButtonString:
     SHOW_USER_INFO = "👀| مشخصات کاربر"
     CHANGE_RULES_TEXT = "⚙️| تغییر متن قوانین"
     CHANGE_HELP_TEXT = "⚙️| تغییر متن راهنما"
-    CHANGE_ENTERY_PRIZE = "⚙️| تغییر هدیه استارت"
     CHANGE_TRUST_CHANNEL = "⚙️| تغییر کانال اعتماد"
-    CHANGE_REFERRAL_BONUS = "⚙️| تغییر هزینه زیرمجموعه"
     JOINED_IN_CHANNEL = "تایید عضویت ✅"
     BACK_TO_ADMIN = "📍 | بازگشت"
     MUSIC = "- Music"
