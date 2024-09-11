@@ -28,12 +28,11 @@ async def send_media(event, media: MediaDownloaded) -> None:
     
     if media.RESULT is True:
                 
-        
         try:
             
             try:
                 message = await client.send_message(event.chat_id, Strings.UPLOADING)
-                await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+                media_sended = await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
             
             except MediaCaptionTooLongError:
                 media_sended = await client.send_file(event.chat_id, file=media.MEDIA, reply_to=event.id)
@@ -41,12 +40,16 @@ async def send_media(event, media: MediaDownloaded) -> None:
             
             await message.delete()
             
-            media_saved = await client.send_file(PeerChannel(BotConfig.MEDIAS_CHANNEL_ID), file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION))
+            try:
+                media_saved = await client.send_message(PeerChannel(BotConfig.MEDIAS_CHANNEL_ID), message=media_sended)
+                with Session(engine) as session:
+                    media_save = Media(media_downloaded_url=str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
+                    session.add(media_save)
+                    session.commit()
+                    session.refresh()
+            except Exception as e:
+                print(e)
             
-            with Session(engine) as session:
-                media_save = Media(media_downloaded_url=str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
-                session.add(media_save)
-                session.commit()
         
         except Exception as e:
             print("Error in send_media, error :", e)
