@@ -46,7 +46,7 @@ async def send_media(event, media: MediaDownloaded) -> None:
                     media_save = Media(media_downloaded_url=str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
                     session.add(media_save)
                     session.commit()
-                    session.refresh()
+                    session.refresh(media_saved)
             except Exception as e:
                 print(e)
             
