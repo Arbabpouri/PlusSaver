@@ -20,10 +20,14 @@ class Pinterest(BaseDownloader):
             if response.status_code != 200:
                 return MediaDownloaded(RESULT=None)
             
-            soup = BeautifulSoup(response.text, 'html.parser')
-            
+            soup = BeautifulSoup(response.text, 'html.parser')            
             image = soup.find("img", attrs={"class": self.__image_class}).get('src') or None
-            caption = soup.find_all("span", attrs={"class": self.__caption_class})[-1].text or "no caption"
+            
+            caption = soup.find_all("span", attrs={"class": self.__caption_class})
+            if caption:
+                caption = caption[-1].text
+            else:
+                caption = "no caption"
             
             if image:
                 
