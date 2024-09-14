@@ -7,22 +7,18 @@ from .base import BaseDownloader
 
 
 class DownloadResponseMedia(BaseModel):
+    formatId: int
     url: str
-    quality: str
-    is_audio: bool | None = None
     type: str
-    extension: str
+    ext: str
     
 class DownloadResponseMedias(BaseModel):
-    url: str
-    source: str
-    author: str
     title: str
-    thumbnail: str
-    duration: int
-    medias: list[DownloadResponseMedia] | None = None
-    type: str
-    error: bool
+    thumbnailUrl: str
+    duration: int | str 
+    formats: list[DownloadResponseMedia] | None = None
+    defaultFormatId: int
+
 
 class Youtube(BaseDownloader):
     
@@ -77,7 +73,7 @@ class Youtube(BaseDownloader):
                             return MediaDownloaded(RESULT=False)
                         
                         for media in medias.medias:
-                            if media.type == 'video' and media.is_audio:
+                            if media.type == 'video_with_audio':
                                 title = medias.title
                                 url = media.url
                                 del medias
