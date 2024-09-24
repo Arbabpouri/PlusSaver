@@ -10,6 +10,7 @@ class Pinterest(BaseDownloader):
         super().__init__(url)
         self.__image_class = "hCL kVc L4E MIw"
         self.__caption_class = "tBJ dyH iFc sAJ X8m zDA IZT swG"
+        self.__video_class = ""
         
     async def download_image(self) -> MediaDownloaded:
         
@@ -20,8 +21,18 @@ class Pinterest(BaseDownloader):
             if response.status_code != 200:
                 return MediaDownloaded(RESULT=None)
             
-            soup = BeautifulSoup(response.text, 'html.parser')            
-            image = soup.find("img", attrs={"class": self.__image_class}).get('src') or None
+            soup = BeautifulSoup(response.text, 'html.parser')
+            media = soup.find("video",class_="hwa kVc MIw L4E")
+            if media:
+                media = media.get('src')
+                media = media.replace("hls","720p").replace("m3u8","mp4")
+            else:
+                media = soup.find("img", attrs={"class": self.__image_class})
+                if media:
+                    media = media.get('src')
+                    
+            if not media:
+                return MediaDownloaded()
             
             caption = soup.find_all("span", attrs={"class": self.__caption_class})
             if caption:
@@ -29,10 +40,10 @@ class Pinterest(BaseDownloader):
             else:
                 caption = "no caption"
             
-            if image:
+            if media:
                 
                 media = MediaDownloaded(
-                    MEDIA=image,
+                    MEDIA=media,
                     TITLE=soup.select_one('title').text,
                     CAPTION=caption,
                     RESULT=True
@@ -42,7 +53,7 @@ class Pinterest(BaseDownloader):
                 media = MediaDownloaded(RESULT=None)
                     
         except Exception as e:
-            print(f"Error fetching images from {self.url}: {e}")
+            print(f"Error fetching medias from {self.url}: {e}")
             media = MediaDownloaded(RESULT=False)
             
         return media
