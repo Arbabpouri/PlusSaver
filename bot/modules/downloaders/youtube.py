@@ -1,5 +1,6 @@
 import requests
 import aiohttp
+from uuid import uuid4
 from pydantic import BaseModel
 from .shcemas import MediaDownloaded
 from .base import BaseDownloader
@@ -89,7 +90,7 @@ class Youtube(BaseDownloader):
                                 async with session.get(url) as video:
                                     
                                     if video.status == 200:
-                                        file_path = fr"./download/video/{title}.mp4"
+                                        file_path = fr"./download/video/{uuid4()}.mp4"
                                         with open(file_path, "wb") as file:
                                             file.write(await video.read())
                                         del video
@@ -104,7 +105,3 @@ class Youtube(BaseDownloader):
         
         return MediaDownloaded(RESULT=False)
         
-
-        
-
-
