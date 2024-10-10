@@ -76,30 +76,32 @@ async def send_media(event, medias: MediaDownloaded | MediasDownloaded) -> None:
 
 async def check_and_send_media_from_db(event, url: str) -> bool:
     with Session(engine) as session:
-        media = session.query(Media).filter_by(media_downloaded_url=str(url)).first()
-        if not media:
+        medias = session.query(Media).filter_by(media_downloaded_url=str(url)).all()
+        if not medias:
             return False
         
-        try:
+        for media in medias:
+        
+            try:
+                    
+                message = await client.get_messages(
+                    entity=PeerChannel(int(media.channel_id)),
+                    ids=int(media.message_id)
+                )
                 
-            message = await client.get_messages(
-                entity=PeerChannel(int(media.channel_id)),
-                ids=int(media.message_id)
-            )
+                await client.send_message(
+                    entity=event.chat_id,
+                    message=message,
+                    reply_to=event.id
+                )
             
-            await client.send_message(
-                entity=event.chat_id,
-                message=message,
-                reply_to=event.id
-            )
-            
-            return True
+            except Exception as e:
+                print("Error in check_and_send_media_from_db, error :", e)
+                session.delete(media)
+                session.commit()
+                return False
         
-        except Exception as e:
-            print("Error in check_and_send_media_from_db, error :", e)
-            session.delete(media)
-            session.commit()
-            return False
+        return True
 
 
 async def check_join(user_id: int) -> bool:
