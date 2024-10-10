@@ -11,60 +11,67 @@ from asyncio import sleep
 import logging
 import os
 
-from ..downloaders import Youtube, SoundCloud, Instagram, MediaDownloaded, Pinterest, TikTok
+from modules.downloaders import Youtube, SoundCloud, Instagram, MediaDownloaded, Pinterest, TikTok, InstagramV2
+from modules.downloaders.shcemas import MediasDownloaded, MediaDownloaded
 from config import Strings, BotConfig
-from .buttons import InlineButtonsData, InlineButtons, TextButtons, TextButtonsString, UrlButtons
-from ..database import User, Channel, Session, engine, Configs, Media
-from .app import client
-from .step import Step, step_limit, Permission
-from ..regexs import Regexs
+from modules.handlers.buttons import InlineButtonsData, InlineButtons, TextButtons, TextButtonsString, UrlButtons
+from modules.database import User, Channel, Session, engine, Configs, Media
+from modules.handlers.app import client
+from modules.handlers.step import Step, step_limit, Permission
+from modules.regexs import Regexs
 
 
 logging.basicConfig(filename="log.txt", filemode="a",format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-async def send_media(event, media: MediaDownloaded) -> None:
+async def send_media(event, medias: MediaDownloaded | MediasDownloaded) -> None:
     
-    if media.RESULT is True:
+    if isinstance(medias, MediaDownloaded):
+        medias = MediasDownloaded(MEDIAS=[medias])
+    
+    for media in medias.MEDIAS:
+        if media.RESULT is True:
                 
-        try:
-            
             try:
-                message = await client.send_message(event.chat_id, Strings.UPLOADING)
-                media_sended = await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+                
+                try:
+                    message = await client.send_message(event.chat_id, Strings.UPLOADING)
+                    media_sended = await client.send_file(event.chat_id, file=media.MEDIA, caption=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=event.id)
+                
+                except MediaCaptionTooLongError:
+                    media_sended = await client.send_file(event.chat_id, file=media.MEDIA, reply_to=event.id)
+                    await client.send_message(event.chat_id, message=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=media_sended.id)
+                
+                await message.delete()
+                
+                try:
+                    media_saved = await client.send_message(PeerChannel(BotConfig.MEDIAS_CHANNEL_ID), message=media_sended)
+                    with Session(engine) as session:
+                        media_save = Media(media_downloaded_url=str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
+                        session.add(media_save)
+                        session.commit()
+                        session.refresh(media_saved)
+                except Exception as e:
+                    print(e)
+                
             
-            except MediaCaptionTooLongError:
-                media_sended = await client.send_file(event.chat_id, file=media.MEDIA, reply_to=event.id)
-                await client.send_message(event.chat_id, message=Strings.media_geted(media.TITLE, media.CAPTION), reply_to=media_sended.id)
-            
-            await message.delete()
-            
+            except Exception as e:
+                print("Error in send_media, error :", e)
+        
             try:
-                media_saved = await client.send_message(PeerChannel(BotConfig.MEDIAS_CHANNEL_ID), message=media_sended)
-                with Session(engine) as session:
-                    media_save = Media(media_downloaded_url=str(event.message.message), message_id=media_saved.id, channel_id=int(BotConfig.MEDIAS_CHANNEL_ID))
-                    session.add(media_save)
-                    session.commit()
-                    session.refresh(media_saved)
+                if os.path.exists(media.MEDIA):
+                    os.remove(media.MEDIA)
             except Exception as e:
                 print(e)
             
-        
-        except Exception as e:
-            print("Error in send_media, error :", e)
-        
-        try:
-            if os.path.exists(media.MEDIA):
-                os.remove(media.MEDIA)
-        except Exception as e:
-            print(e)
+            await sleep(0.5)
             
-    elif media.RESULT is False:
-        await event.reply(Strings.MEDIA_GET_ERROR)
-    
-    elif media.RESULT is None:
-        await event.reply(Strings.MEDIA_NOT_FOUND)
+        elif media.RESULT is False:
+            await event.reply(Strings.MEDIA_GET_ERROR)
+        
+        elif media.RESULT is None:
+            await event.reply(Strings.MEDIA_NOT_FOUND)
 
 
 async def check_and_send_media_from_db(event, url: str) -> bool:
@@ -414,9 +421,10 @@ class NewMessageHandlers(HandlerBase):
             
             if not await check_and_send_media_from_db(event, url):
                 
-                instagram_client = Instagram(url)
-                video = await instagram_client.download_media()
-                await send_media(event, video)
+                # instagram_client = Instagram(url)
+                instagram_client = InstagramV2(url)
+                medias = await instagram_client.download_media()
+                await send_media(event, medias)
             
             await message.delete()
                                 
