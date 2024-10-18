@@ -8,10 +8,11 @@ from .base import BaseDownloader
 
 
 class DownloadResponseMedia(BaseModel):
-    formatId: int
+    formatId: int | str | None = None
     label: str
     type: str
     ext: str
+    quality: str | None = None
     width: int | None = None
     height: int | None = None
     url: str
@@ -78,7 +79,7 @@ class Youtube(BaseDownloader):
                 
                     if response.status == 200:
                                                     
-                        data = await response.json()                        
+                        data = await response.json()
                         medias = DownloadResponseMedias(**data)
                         
                         for media in medias.formats:
